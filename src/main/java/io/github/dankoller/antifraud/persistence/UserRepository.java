@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+// Repository for user entities
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     User findByUsername(String username);
@@ -14,6 +15,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findUserByUsername(String username);
 
     List<User> findAll();
-
-    boolean existsByUsername(String username);
 }
