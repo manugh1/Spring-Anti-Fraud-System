@@ -34,6 +34,9 @@ dependencies {
 	// Spring security
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
 
+	// Add Thymeleaf as a template engine
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 	// Database connection
 //	runtimeOnly 'com.h2database:h2:1.4.200'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
