@@ -6,6 +6,14 @@ users, and an internal transaction validation logic based on a set of heuristic 
 
 It's based on a track by [Jetbrains Academy](https://hyperskill.org/projects/232).
 
+## Requirements
+
+To build and run this project you need:
+
+- [JDK 17](https://www.openjdk.java.net/projects/jdk/17/)
+- [Gradle 7.2](https://gradle.org/install/)
+- [MySQL 8.0](https://dev.mysql.com/downloads/mysql/)
+
 ## How to use
 
 In its current stage*, you can only access the endpoints using a browser or a tool that allows you to send HTTP requests
@@ -332,7 +340,8 @@ model-view-controller pattern. The application consists of the following compone
 - Java 17
 - Gradle 7.5
 - Spring Boot 2.7.2
-- H2 Database (Version 1.4.200)
+- ~~H2 Database (Version 1.4.200)~~
+- MySQL (Version 8.0.30)
 
 ## Dependencies
 
@@ -342,7 +351,9 @@ model-view-controller pattern. The application consists of the following compone
 - [Spring Boot Data JPA 2.7.0](https://spring.io/projects/spring-boot-data-jpa)
 - [Spring Boot Security 2.7.0](https://spring.io/projects/spring-boot-security)
 - [Hibernate Validator 6.1.0.Final](https://hibernate.org/validator/)
-- [H2 Database 1.4.200](https://www.h2database.com/)
+- ~~[H2 Database 1.4.200](https://www.h2database.com/)~~
+- [MySQL 8.0.30](https://www.mysql.com/)
+- [MySQL Connector 8.0.30](https://dev.mysql.com/downloads/connector/j/)
 - [Lombok 1.18.24](https://projectlombok.org/)
 
 ## Roadmap
