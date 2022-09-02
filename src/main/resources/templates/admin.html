@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Administration - Anti Fraud System</title>
+    <link rel="stylesheet" type="text/css" th:href="@{../styles/indexStyle.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="#" class="navbar-brand"><b>Anti Fraud System</b></a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+        <div class="navbar-nav">
+            <a href="#" class="nav-item nav-link">Home</a>
+            <a href="#" class="nav-item nav-link">About</a>
+            <div class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle active">Services</a>
+                <div class="dropdown-menu">
+                    <a href="/web/merchant" class="dropdown-item">Merchant view</a>
+                    <a href="/web/support" class="dropdown-item">Support view</a>
+                    <a href="/web/admin" class="dropdown-item">Administration</a>
+                </div>
+            </div>
+            <a href="#" class="nav-item nav-link">Contact</a>
+        </div>
+        <form class="navbar-form form-inline">
+            <div class="input-group search-box">
+                <input type="text" id="search" class="form-control" placeholder="Search here...">
+                <div class="input-group-append">
+					<span class="input-group-text">
+						<i class="material-icons"></i>
+					</span>
+                </div>
+            </div>
+        </form>
+        <div class="navbar-nav ml-auto action-buttons">
+            <div class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle mr-4">Logout</a>
+                <div class="dropdown-menu action-form">
+                    <form action="/web/success" method="post">
+                        <!--TODO: Add logout form-->
+                    </form>
+                </div>
+            </div>
+            <div class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn"
+                   aria-expanded="false">Sign up</a>
+                <div class="dropdown-menu action-form">
+                    <form action="/web/success" method="post">
+                        <p class="hint-text">Fill in this form to create your account!</p>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" placeholder="Your name"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" placeholder="Username"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="confirm_password"
+                                   placeholder="Confirm Password" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a
+                                    href="#">Terms &amp; Conditions</a></label>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" value="Sign up" onclick=send()>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--Main content-->
+<div class="page-wrapper chiller-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">Menu</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded"
+                         src="https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-512.png"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <!--TODO: Update user name and role according to the currently logged in admin user-->
+                    <span class="user-name">John<strong>Doe</strong></span>
+                    <span class="user-role">Administrator</span>
+                    <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+                </div>
+            </div>
+            <!-- sidebar-header  -->
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search...">
+                        <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu">
+                        <span>General</span>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                            <span class="badge badge-pill badge-warning">New</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Dashboard 1
+                                        <span class="badge badge-pill badge-success">Pro</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">Dashboard 2</a>
+                                </li>
+                                <li>
+                                    <a href="#">Dashboard 3</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>Active users</span>
+                            <span class="badge badge-pill badge-danger">3</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Add user</a>
+                                </li>
+                                <li>
+                                    <a href="#">Remove user</a>
+                                </li>
+                                <li>
+                                    <a href="#">Update user role</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-chart-line"></i>
+                            <span>Charts</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Pie chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Line chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Bar chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Histogram</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-globe"></i>
+                            <span>Maps</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Google maps</a>
+                                </li>
+                                <li>
+                                    <a href="#">Open street map</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="header-menu">
+                        <span>Extra</span>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book"></i>
+                            <span>Documentation</span>
+                            <span class="badge badge-pill badge-primary">Beta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-calendar"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-folder"></i>
+                            <span>Examples</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container-fluid">
+            <h2>Anti-Fraud System</h2>
+            <hr>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <p>This project demonstrates (in a simplified form) the principles of anti-fraud systems in the
+                        financial sector. For this project, we will work on a system with an expanded role model, a set
+                        of REST endpoints responsible for interacting with users, and an internal transaction validation
+                        logic based on a set of heuristic rules.</p>
+                    <p> You can find the complete code on
+                        <a href="https://github.com/dan-koller/Spring-Anti-Fraud-System" target="_blank">Github</a></p>
+                </div>
+                <div class="form-group col-md-12">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">New!</h4>
+                        <p>New messages or notifications can be posted here</p>
+                        <a href="https://github.com/dan-koller/Spring-Anti-Fraud-System" target="_blank"
+                           class="btn btn-sm btn-primary mr-2">Github</a>
+                        <a href="#" target="_blank"
+                           class="btn btn-sm btn-success">Demo</a>
+                    </div>
+
+                </div>
+            </div>
+            <h5>More projects</h5>
+            <hr>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="card rounded-0 p-0 shadow-sm">
+                        <img src="https://dan-koller.github.io/src/images/api-coding.jpg"
+                             class="card-img-top rounded-0" alt="Angular pro sidebar">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Accounting Service</h6>
+                            <a href="https://github.com/dan-koller/Spring-Accounting-Service" target="_blank"
+                               class="btn btn-primary btn-sm">Github</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="card rounded-0 p-0 shadow-sm">
+                        <img src="https://raw.githubusercontent.com/dan-koller/Spring-Code-Sharing-Platform/main/img.png"
+                             class="card-img-top rounded-0" alt="Angular pro sidebar">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Code Sharing Platform</h6>
+                            <a href="https://github.com/dan-koller/Spring-Code-Sharing-Platform" target="_blank"
+                               class="btn btn-primary btn-sm">Github</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <footer class="text-center">
+                <div class="mb-2">
+                    <small id="copyright-footer">
+                        © Dan Koller
+                    </small>
+                </div>
+                <div>
+                    <a href="https://github.com/dan-koller" target="_blank">
+                        <img alt="GitHub followers"
+                             src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social"/>
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </main>
+    <!-- page-content" -->
+</div>
+
+<!-- page-wrapper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<!--Custom scripts-->
+<script type="text/javascript" th:src="@{../scripts/sendObject.js}"></script>
+<script type="text/javascript" th:src="@{../scripts/handleSideBar.js}"></script>
+<script type="text/javascript" th:src="@{../scripts/footerText.js}"></script>
+
+</body>
+</html>

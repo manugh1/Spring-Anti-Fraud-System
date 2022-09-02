@@ -360,5 +360,5 @@ model-view-controller pattern. The application consists of the following compone
 
 - Add an admin panel
 - Add web interface for users
-- Update database schema to support H2 Version 2.x
+~~- Update database schema to support H2 Version 2.x~~
 - Add unit tests

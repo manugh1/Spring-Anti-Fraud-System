@@ -24,5 +24,18 @@ public class WebController {
         return "success";
     }
 
-    // TODO: Add merchant, support and admin pages
+    @GetMapping("/merchant")
+    public String getMerchantPage() {
+        return "merchant";
+    }
+
+    @GetMapping("/support")
+    public String getSupportPage() {
+        return "support";
+    }
+
+    @GetMapping("/admin")
+    public String getAdminPage() {
+        return "admin";
+    }
 }

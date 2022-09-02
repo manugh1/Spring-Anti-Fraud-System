@@ -45,6 +45,10 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/auth/**").hasRole("ADMINISTRATOR")
                 .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT")
                 .mvcMatchers("/web/**").permitAll()
+//                .mvcMatchers("/web/success").permitAll()
+//                .mvcMatchers("/web/merchant").hasRole("MERCHANT")
+//                .mvcMatchers("/web/support").hasRole("SUPPORT")
+//                .mvcMatchers("/web/admin").hasRole("ADMINISTRATOR")
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
                 .and()
                 .sessionManagement()

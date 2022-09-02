@@ -13,6 +13,6 @@ function send() {
     xhr.send(json);
 
     if (xhr.status == 200 || xhr.status == 201) {
-        alert("Success!");
+        console.log("Success!");
     }
 }
