@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Anti Fraud System</title>
-    <link rel="stylesheet" type="text/css" th:href="@{../styles/mainStyle.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{../styles/indexStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/indexStyle.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -25,22 +24,17 @@
     <!-- Collection of nav links, forms, and other content for toggling -->
     <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
         <div class="navbar-nav">
-            <a href="#" class="nav-item nav-link">Home</a>
-            <a href="#" class="nav-item nav-link">About</a>
-            <div class="navbar-nav">
-                <a href="/web/" class="nav-item nav-link">Home</a>
-                <a href="/web/about/" class="nav-item nav-link">About</a>
-                <div class="nav-item dropdown">
-                    <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
-                    <div class="dropdown-menu">
-                        <a href="/web/merchant" class="dropdown-item">Merchant view</a>
-                        <a href="/web/support" class="dropdown-item">Support view</a>
-                        <a href="/web/admin" class="dropdown-item">Administration</a>
-                    </div>
+            <a href="/web/" class="nav-item nav-link">Home</a>
+            <a href="/web/about/" class="nav-item nav-link">About</a>
+            <div class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
+                <div class="dropdown-menu">
+                    <a href="/web/merchant/" class="dropdown-item">Merchant view</a>
+                    <a href="/web/support/" class="dropdown-item">Support view</a>
+                    <a href="/web/admin/" class="dropdown-item">Administration</a>
                 </div>
-                <a href="/web/pricing/" class="nav-item nav-link active">Pricing</a>
-                <a href="/web/contact" class="nav-item nav-link">Contact</a>
             </div>
+            <a href="/web/contact" class="nav-item nav-link">Contact</a>
         </div>
         <form class="navbar-form form-inline">
             <div class="input-group search-box">
@@ -175,15 +169,6 @@
     </main>
     <!-- page-content" -->
 </div>
-
-<!-- page-wrapper -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"-->
-<!--        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"-->
-<!--        crossorigin="anonymous"></script>-->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"-->
-<!--        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"-->
-<!--        crossorigin="anonymous"></script>-->
 
 <!--Custom scripts-->
 <script type="text/javascript" th:src="@{../scripts/sendObject.js}"></script>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Support view - Anti Fraud System</title>
-    <link rel="stylesheet" type="text/css" th:href="@{../styles/mainStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -24,18 +24,17 @@
     <!-- Collection of nav links, forms, and other content for toggling -->
     <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
         <div class="navbar-nav">
-            <a href="#" class="nav-item nav-link">Home</a>
-            <a href="#" class="nav-item nav-link">About</a>
+            <a href="/web/" class="nav-item nav-link">Home</a>
+            <a href="/web/about/" class="nav-item nav-link">About</a>
             <div class="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
                 <div class="dropdown-menu">
-                    <a href="/web/merchant" class="dropdown-item">Merchant view</a>
-                    <a href="/web/support" class="dropdown-item">Support view</a>
-                    <a href="/web/admin" class="dropdown-item">Administration</a>
+                    <a href="/web/merchant/" class="dropdown-item">Merchant view</a>
+                    <a href="/web/support/" class="dropdown-item">Support view</a>
+                    <a href="/web/admin/" class="dropdown-item">Administration</a>
                 </div>
             </div>
-            <a href="#" class="nav-item nav-link active">Pricing</a>
-            <a href="#" class="nav-item nav-link">Contact</a>
+            <a href="/web/contact" class="nav-item nav-link">Contact</a>
         </div>
         <form class="navbar-form form-inline">
             <div class="input-group search-box">
@@ -102,8 +101,8 @@
 <!--Main content-->
 <h1><i>Site under construction...</i></h1>
 
-<script type="text/javascript" th:src="@{../scripts/sendObject.js}"></script>
-<script type="text/javascript" th:src="@{../scripts/handleSideBar.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/sendObject.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/handleSideBar.js}"></script>
 
 </body>
 </html>

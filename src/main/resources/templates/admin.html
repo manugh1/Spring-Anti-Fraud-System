@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Administration - Anti Fraud System</title>
-    <link rel="stylesheet" type="text/css" th:href="@{../styles/mainStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -24,17 +23,17 @@
     <!-- Collection of nav links, forms, and other content for toggling -->
     <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
         <div class="navbar-nav">
-            <a href="#" class="nav-item nav-link">Home</a>
-            <a href="#" class="nav-item nav-link">About</a>
+            <a href="/web/" class="nav-item nav-link">Home</a>
+            <a href="/web/about/" class="nav-item nav-link">About</a>
             <div class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle active">Services</a>
+                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
                 <div class="dropdown-menu">
-                    <a href="/web/merchant" class="dropdown-item">Merchant view</a>
-                    <a href="/web/support" class="dropdown-item">Support view</a>
-                    <a href="/web/admin" class="dropdown-item">Administration</a>
+                    <a href="/web/merchant/" class="dropdown-item">Merchant view</a>
+                    <a href="/web/support/" class="dropdown-item">Support view</a>
+                    <a href="/web/admin/" class="dropdown-item">Administration</a>
                 </div>
             </div>
-            <a href="#" class="nav-item nav-link">Contact</a>
+            <a href="/web/contact" class="nav-item nav-link">Contact</a>
         </div>
         <form class="navbar-form form-inline">
             <div class="input-group search-box">
@@ -110,7 +109,7 @@
                 </div>
                 <div class="user-info">
                     <!--TODO: Update user name and role according to the currently logged in admin user-->
-                    <span class="user-name">John <strong>Doe</strong></span>
+                    <span class="user-name" id="admin-name">John <strong>Doe</strong></span>
                     <span class="user-role">Administrator</span>
                     <span class="user-status">
             <i class="fa fa-circle"></i>
@@ -146,36 +145,28 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="#">Dashboard 1
+                                    <a href="#">Custom Dashboard
                                         <span class="badge badge-pill badge-success">Pro</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#">Dashboard 2</a>
-                                </li>
-                                <li>
-                                    <a href="#">Dashboard 3</a>
-                                </li>
+                                <li><a href="#">Server Dashboard</a></li>
+                                <li><a href="#">User Dashboard</a></li>
                             </ul>
                         </div>
                     </li>
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fa fa-shopping-cart"></i>
-                            <span>Active users</span>
-                            <span class="badge badge-pill badge-danger">3</span>
+                            <span>Manage users</span>
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li>
-                                    <a href="#">Add user</a>
-                                </li>
-                                <li>
-                                    <a href="#">Remove user</a>
-                                </li>
-                                <li>
-                                    <a href="#">Update user role</a>
-                                </li>
+                                <!--TODO: Update hrefs to link to the correct site-->
+                                <li><a href="#">Add user</a></li>
+                                <li><a href="#">Remove user</a></li>
+                                <li><a href="#">List current users</a></li>
+                                <li><a href="#">Update user role</a></li>
+                                <li><a href="#">Update user access</a></li>
                             </ul>
                         </div>
                     </li>
@@ -183,6 +174,7 @@
                         <a href="#">
                             <i class="fa fa-chart-line"></i>
                             <span>Charts</span>
+                            <span class="badge badge-pill badge-danger">4</span>
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
@@ -265,62 +257,35 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-            <h2>Anti-Fraud System</h2>
+            <h2>Administration</h2>
             <hr>
             <div class="row">
-                <div class="form-group col-md-12">
-                    <p>This project demonstrates (in a simplified form) the principles of anti-fraud systems in the
-                        financial sector. For this project, we will work on a system with an expanded role model, a set
-                        of REST endpoints responsible for interacting with users, and an internal transaction validation
-                        logic based on a set of heuristic rules.</p>
-                    <p> You can find the complete code on
-                        <a href="https://github.com/dan-koller/Spring-Anti-Fraud-System" target="_blank">Github</a>.</p>
-                </div>
                 <div class="form-group col-md-12">
                     <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">New!</h4>
-                        <p>New messages or notifications can be posted here</p>
-                        <a href="https://github.com/dan-koller/Spring-Anti-Fraud-System" target="_blank"
-                           class="btn btn-sm btn-primary mr-2">Github</a>
+                        <h4 class="alert-heading">App Status</h4>
+                        <p>There are currently no events or notifications that need your attention. Have a nice day!</p>
                         <a href="#" target="_blank"
-                           class="btn btn-sm btn-success">Demo</a>
+                           class="btn btn-sm btn-primary mr-2">Show events</a>
+                        <a href="#" target="_blank"
+                           class="btn btn-sm btn-success">OK</a>
                     </div>
-
+                </div>
+                <div class="form-group col-md-12">
+                    <p id="admin-greeting">Hello there!</p>
+                    <p>What are you going to do?</p>
+                    <ul>
+                        <!--TODO: Update hrefs to link to the correct site-->
+                        <li><a href="#">Add a new user</a></li>
+                        <li><a href="#">Remove an existing user</a></li>
+                        <li><a href="#">View the list of active users</a></li>
+                        <li><a href="#">Update the role of an existing user</a></li>
+                        <li><a href="#">Update the access level of an existing user</a></li>
+                    </ul>
                 </div>
             </div>
-            <h5>More projects</h5>
-            <hr>
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <div class="card rounded-0 p-0 shadow-sm">
-                        <img src="https://dan-koller.github.io/src/images/api-coding.jpg"
-                             class="card-img-top rounded-0" alt="Angular pro sidebar">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Accounting Service</h6>
-                            <a href="https://github.com/dan-koller/Spring-Accounting-Service" target="_blank"
-                               class="btn btn-primary btn-sm">Github</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <div class="card rounded-0 p-0 shadow-sm">
-                        <img src="https://raw.githubusercontent.com/dan-koller/Spring-Code-Sharing-Platform/main/img.png"
-                             class="card-img-top rounded-0" alt="Angular pro sidebar">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Code Sharing Platform</h6>
-                            <a href="https://github.com/dan-koller/Spring-Code-Sharing-Platform" target="_blank"
-                               class="btn btn-primary btn-sm">Github</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-
             <footer class="text-center">
                 <div class="mb-2">
-                    <small id="copyright-footer">
-                        © Dan Koller
-                    </small>
+                    <small id="copyright-footer">© Dan Koller</small>
                 </div>
                 <div>
                     <a href="https://github.com/dan-koller" target="_blank">
@@ -331,23 +296,14 @@
             </footer>
         </div>
     </main>
-    <!-- page-content" -->
 </div>
 
-<!-- page-wrapper -->
-<!--TODO: Fix scripts that cause errors with bootstrap navbar-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
 <!--Custom scripts-->
-<script type="text/javascript" th:src="@{../scripts/sendObject.js}"></script>
-<script type="text/javascript" th:src="@{../scripts/handleSideBar.js}"></script>
-<script type="text/javascript" th:src="@{../scripts/footerText.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/sendObject.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/handleSideBar.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/footerText.js}"></script>
+
+<script type="text/javascript" th:src="@{/scripts/admin/admin-greeting.js}"></script>
 
 </body>
 </html>
