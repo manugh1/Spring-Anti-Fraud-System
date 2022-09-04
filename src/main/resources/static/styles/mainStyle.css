@@ -71,7 +71,7 @@ body {
 	border-color: #e5e5e5;
 	box-shadow: 0 2px 8px rgba(0,0,0,.05);
 }
-.navbar a, .navbar a:active {
+.navbar a, .navbar {
 	color: #888;
 	padding: 8px 20px;
 	background: transparent;

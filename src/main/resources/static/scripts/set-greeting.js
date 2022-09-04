@@ -1,6 +1,6 @@
 // Update the user greeting based on the current time of day
 function updateGreeting(name) {
-    const greeting = document.getElementById("admin-greeting");
+    const greeting = document.getElementById("user-greeting");
     const date = new Date();
     const hours = date.getHours();
     if (hours < 12) {
@@ -15,7 +15,7 @@ function updateGreeting(name) {
 
 window.onload = function() {
     // Get the user name from the session
-    let name = document.getElementById("admin-name").innerHTML;
+    let name = document.getElementsByClassName("user-name")[0].innerHTML;
     // Remove strong tags from name
     name = name.replace(/<\/?strong>/g, "");
     // Update greeting

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,9 +14,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<!--Add a navbar-->
+<!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a href="#" class="navbar-brand"><b>Anti Fraud System</b></a>
+    <a href="/web/" class="navbar-brand"><b>Anti Fraud System</b></a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -48,47 +47,38 @@
         </form>
         <div class="navbar-nav ml-auto action-buttons">
             <div class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle mr-4">Login</a>
+                <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle mr-4">Logout</a>
                 <div class="dropdown-menu action-form">
                     <form action="/web/success" method="post">
-                        <p class="hint-text">Sign in with your social media account</p>
-                        <div class="form-group social-btn clearfix">
-                            <a href="#" class="btn btn-secondary facebook-btn float-left"><i class="fa fa-facebook"></i> Facebook</a>
-                            <a href="#" class="btn btn-secondary twitter-btn float-right"><i class="fa fa-twitter"></i> Twitter</a>
-                        </div>
-                        <div class="or-seperator"><b>or</b></div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Username" required="required">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Password" required="required">
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-block" value="Login">
-                        <div class="text-center mt-2">
-                            <a href="#">Forgot Your password?</a>
-                        </div>
+                        <!--TODO: Add logout form-->
                     </form>
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn" aria-expanded="false">Sign up</a>
+                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn"
+                   aria-expanded="false">Sign up</a>
                 <div class="dropdown-menu action-form">
                     <form action="/web/success" method="post">
                         <p class="hint-text">Fill in this form to create your account!</p>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="name" placeholder="Your name" required="required">
+                            <input type="text" class="form-control" id="name" placeholder="Your name"
+                                   required="required">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="username" placeholder="Username" required="required">
+                            <input type="text" class="form-control" id="username" placeholder="Username"
+                                   required="required">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" required="required">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   required="required">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" required="required">
+                            <input type="password" class="form-control" id="confirm_password"
+                                   placeholder="Confirm Password" required="required">
                         </div>
                         <div class="form-group">
-                            <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms &amp; Conditions</a></label>
+                            <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a
+                                    href="#">Terms &amp; Conditions</a></label>
                         </div>
                         <input type="submit" class="btn btn-primary btn-block" value="Sign up" onclick=send()>
                     </form>
@@ -99,10 +89,215 @@
 </nav>
 
 <!--Main content-->
-<h1><i>Site under construction...</i></h1>
+<div class="page-wrapper chiller-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">Menu</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded"
+                         src="https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-512.png"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <!--TODO: Update user name and role according to the currently logged in admin user-->
+                    <span class="user-name" id="admin-name">Joanna <strong>Doe</strong></span>
+                    <span class="user-role">Merchant</span>
+                    <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+                </div>
+            </div>
+            <!-- sidebar-header  -->
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search...">
+                        <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu">
+                        <span>General</span>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                            <span class="badge badge-pill badge-warning">New</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Custom Dashboard
+                                        <span class="badge badge-pill badge-success">Pro</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">Server Dashboard</a></li>
+                                <li><a href="#">User Dashboard</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>Tasks</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <!--TODO: Update hrefs to link to the correct site-->
+                                <li><a href="#">Add user</a></li>
+                                <li><a href="#">Post a new transaction</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-chart-line"></i>
+                            <span>Charts</span>
+                            <span class="badge badge-pill badge-danger">4</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Pie chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Line chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Bar chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Histogram</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-globe"></i>
+                            <span>Maps</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Google maps</a>
+                                </li>
+                                <li>
+                                    <a href="#">Open street map</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="header-menu">
+                        <span>Extra</span>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book"></i>
+                            <span>Documentation</span>
+                            <span class="badge badge-pill badge-primary">Beta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-calendar"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-folder"></i>
+                            <span>Examples</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container-fluid">
+            <h2>Merchant</h2>
+            <hr>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">App Status</h4>
+                        <p>There are currently no events or notifications that need your attention. Have a nice day!</p>
+                        <a href="#" target="_blank"
+                           class="btn btn-sm btn-primary mr-2">Show events</a>
+                        <a href="#" target="_blank"
+                           class="btn btn-sm btn-success">OK</a>
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    <p id="user-greeting">Hello there!</p>
+                    <p>What would you like to do?</p>
+                    <ul>
+                        <!--TODO: Update hrefs to link to the correct site-->
+                        <li><a href="#">Add a new user</a></li>
+                        <li><a href="#">Post a new transaction</a></li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="text-center">
+                <div class="mb-2">
+                    <small id="copyright-footer">© Dan Koller</small>
+                </div>
+                <div>
+                    <a href="https://github.com/dan-koller" target="_blank">
+                        <img alt="GitHub followers"
+                             src="https://img.shields.io/github/followers/dan-koller?label=github&style=social"/>
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </main>
+</div>
 
-<script type="text/javascript" th:src="@{/scripts/sendObject.js}"></script>
-<script type="text/javascript" th:src="@{/scripts/handleSideBar.js}"></script>
+<!--Custom scripts-->
+<script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
+
+<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>
 </html>

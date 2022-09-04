@@ -358,7 +358,8 @@ model-view-controller pattern. The application consists of the following compone
 
 ## Roadmap
 
-- Add an admin panel
-- Add web interface for users
-~~- Update database schema to support H2 Version 2.x~~
+- ~~Add an admin panel~~
+- ~~Add web interface for users~~
+- ~~Update database schema to support H2 Version 2.x~~
+- Complete web interface for users coming soon. Stay tuned!
 - Add unit tests
