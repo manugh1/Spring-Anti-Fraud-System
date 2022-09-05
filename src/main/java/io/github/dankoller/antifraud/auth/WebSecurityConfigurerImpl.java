@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.IOException;
+
 @EnableWebSecurity
 @SuppressWarnings("unused")
 public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
@@ -39,20 +41,26 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .mvcMatchers("/h2-console/**").permitAll() // for H2 console
+                // Api endpoints
                 .mvcMatchers("/api/auth/user", "/actuator/shutdown").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/antifraud/transaction").hasRole("MERCHANT")
                 .mvcMatchers("/api/auth/list").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/api/auth/**").hasRole("ADMINISTRATOR")
                 .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT")
-                .mvcMatchers("/web/**").permitAll()
-//                .mvcMatchers("/web/success").permitAll()
-//                .mvcMatchers("/web/merchant").hasRole("MERCHANT")
-//                .mvcMatchers("/web/support").hasRole("SUPPORT")
-//                .mvcMatchers("/web/admin").hasRole("ADMINISTRATOR")
+                // Web endpoints
+                .mvcMatchers("/web/success").permitAll()
+                .mvcMatchers("/web/about").permitAll()
+                .mvcMatchers("/web/contact").permitAll()
+                .mvcMatchers("/web/merchant").hasRole("MERCHANT")
+                .mvcMatchers("/web/support").hasRole("SUPPORT")
+                .mvcMatchers("/web/admin").hasRole("ADMINISTRATOR")
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .formLogin() // Allow form login
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/web/"); // Redirect to homepage after logout
     }
 
     @Bean

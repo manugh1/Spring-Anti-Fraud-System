@@ -1,14 +1,13 @@
-function send() {
+function sendLogin() {
     let object = {
-        name: document.getElementById("signup-name").value,
-        username: document.getElementById("signup-username").value,
-        password: document.getElementById("signup-password").value
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value
     };
 
     let json = JSON.stringify(object);
 
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", '/api/auth/user', false);
+    xhr.open("POST", '/login', false);
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.send(json);
 
