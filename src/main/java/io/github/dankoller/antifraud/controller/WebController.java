@@ -14,6 +14,16 @@ public class WebController {
         return "index";
     }
 
+    @GetMapping("/about")
+    public String getAboutPage() {
+        return "about";
+    }
+
+    @GetMapping("/contact")
+    public String getContactPage() {
+        return "contact";
+    }
+
     @GetMapping("/success")
     public String getSignupPage() {
         return "success";

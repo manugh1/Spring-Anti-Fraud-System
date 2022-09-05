@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Anti Fraud System</title>
+    <title>About</title>
     <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/styles/indexStyle.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
@@ -53,8 +53,10 @@
                     <form action="/web/success" method="post">
                         <p class="hint-text">Sign in with your social media account</p>
                         <div class="form-group social-btn clearfix">
-                            <a href="#" class="btn btn-secondary facebook-btn float-left"><i class="fa fa-facebook"></i> Facebook</a>
-                            <a href="#" class="btn btn-secondary twitter-btn float-right"><i class="fa fa-twitter"></i> Twitter</a>
+                            <a href="#" class="btn btn-secondary facebook-btn float-left"><i class="fa fa-facebook"></i>
+                                Facebook</a>
+                            <a href="#" class="btn btn-secondary twitter-btn float-right"><i class="fa fa-twitter"></i>
+                                Twitter</a>
                         </div>
                         <div class="or-seperator"><b>or</b></div>
                         <div class="form-group">
@@ -71,24 +73,30 @@
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn" aria-expanded="false">Sign up</a>
+                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn"
+                   aria-expanded="false">Sign up</a>
                 <div class="dropdown-menu action-form">
                     <form action="/web/success" method="post">
                         <p class="hint-text">Fill in this form to create your account!</p>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="name" placeholder="Your name" required="required">
+                            <input type="text" class="form-control" id="name" placeholder="Your name"
+                                   required="required">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="username" placeholder="Username" required="required">
+                            <input type="text" class="form-control" id="username" placeholder="Username"
+                                   required="required">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" required="required">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   required="required">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" required="required">
+                            <input type="password" class="form-control" id="confirm_password"
+                                   placeholder="Confirm Password" required="required">
                         </div>
                         <div class="form-group">
-                            <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms &amp; Conditions</a></label>
+                            <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a
+                                    href="#">Terms &amp; Conditions</a></label>
                         </div>
                         <input type="submit" class="btn btn-primary btn-block" value="Sign up" onclick=send()>
                     </form>
@@ -101,7 +109,7 @@
 <div class="page-wrapper chiller-theme toggled">
     <main class="page-content">
         <div class="container-fluid">
-            <h2>Anti-Fraud System</h2>
+            <h2>About this project</h2>
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
@@ -109,60 +117,17 @@
                         financial sector. For this project, we will work on a system with an expanded role model, a set
                         of REST endpoints responsible for interacting with users, and an internal transaction validation
                         logic based on a set of heuristic rules.</p>
-                    <p> You can find the complete code on
+                    <p>The system is mainly divided into two parts: the front-end and the back-end. The front-end is
+                        responsible for the interaction with the user, and the back-end is responsible for the
+                        interaction with the database and the validation of the transactions.</p>
+                    <p>The front-end is a web application that allows the user to interact with the system. It is built
+                        primarily with HTML, CSS, and JavaScript. The back-end is a REST API that allows the front-end
+                        to interact with the database. It is built primarily with Java and Spring Boot.</p>
+                    <p>You can find the complete code on
                         <a href="https://github.com/dan-koller/Spring-Anti-Fraud-System" target="_blank">Github</a>.</p>
                 </div>
-                <div class="form-group col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">New!</h4>
-                        <p>New messages or notifications can be posted here</p>
-                        <a href="https://github.com/dan-koller/Spring-Anti-Fraud-System" target="_blank"
-                           class="btn btn-sm btn-primary mr-2">Github</a>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-success">Demo</a>
-                    </div>
-
-                </div>
-            </div>
-            <h5>More projects</h5>
-            <hr>
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <div class="card rounded-0 p-0 shadow-sm">
-                        <img src="https://raw.githubusercontent.com/dan-koller/Spring-Code-Sharing-Platform/main/img.png"
-                             class="card-img-top rounded-0" alt="Angular pro sidebar">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Code Sharing Platform</h6>
-                            <a href="https://github.com/dan-koller/Spring-Code-Sharing-Platform" target="_blank"
-                               class="btn btn-primary btn-sm">Github</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <div class="card rounded-0 p-0 shadow-sm">
-                        <img src="https://dan-koller.github.io/src/images/api-coding.jpg"
-                             class="card-img-top rounded-0" alt="Angular pro sidebar">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Accounting Service</h6>
-                            <a href="https://github.com/dan-koller/Spring-Accounting-Service" target="_blank"
-                               class="btn btn-primary btn-sm">Github</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <div class="card rounded-0 p-0 shadow-sm">
-                        <img src="https://raw.githubusercontent.com/dan-koller/Flask-Weather-App/main/res/weather-app-screenshot.png"
-                             class="card-img-top rounded-0" alt="Angular pro sidebar">
-                        <div class="card-body text-center">
-                            <h6 class="card-title">Weather app</h6>
-                            <a href="https://github.com/dan-koller/Flask-Weather-App" target="_blank"
-                               class="btn btn-primary btn-sm">Github</a>
-                        </div>
-                    </div>
-                </div>
             </div>
             <hr>
-
             <footer class="text-center">
                 <div class="mb-2">
                     <small id="copyright-footer">
