@@ -221,30 +221,28 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-            <h2>Administration</h2>
+            <h2>Update user role</h2>
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">App Status</h4>
-                        <p>There are currently no events or notifications that need your attention. Have a nice day!</p>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-primary mr-2">Show events</a>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-success">OK</a>
-                    </div>
-                </div>
-                <div class="form-group col-md-12">
-                    <p id="user-greeting">Hello there!</p>
-                    <p>What would you like to do?</p>
-                    <ul>
-                        <!--TODO: Update hrefs to link to the correct site-->
-                        <li><a href="/web/admin/new-user">Add a new user</a></li>
-                        <li><a href="/web/admin/delete-user">Remove an existing user</a></li>
-                        <li><a href="/web/list">View a list of active users</a></li>
-                        <li><a href="/web/admin/update-role">Update the role of an existing user</a></li>
-                        <li><a href="/web/admin/update-access">Update the access level of an existing user</a></li>
-                    </ul>
+                    <form action="/web/admin/update-role" method="post">
+                        <p class="hint-text">Fill in this form to update the role of a user:</p>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" placeholder="Username"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <label>Select role:
+                                <select id="userrole">
+                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="MERCHANT">Merchant</option>
+                                    <option value="SUPPORT">Support</option>
+                                    <option value="ADMINISTRATOR">Administrator</option>
+                                </select>
+                            </label>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" value="Update role" onclick=updateRole()>
+                    </form>
                 </div>
             </div>
             <footer class="text-center">
@@ -263,11 +261,9 @@
 </div>
 
 <!--Custom scripts-->
-<script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/admin/put-update-role.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>
 </html>

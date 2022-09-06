@@ -13,6 +13,8 @@ function send() {
     xhr.send(json);
 
     if (xhr.status == 200 || xhr.status == 201) {
-        console.log("Success!");
+        alert("Successfully signed up!");
+    } else {
+        alert("There was an error signing you up! Please try again.");
     }
 }

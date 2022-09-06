@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/web")
 public class WebController {
 
-    @GetMapping("/")
+    // Using request mapping instead of get mapping because of the redirects in the html
+
+    @RequestMapping("/")
     public String getIndexPage() {
         return "index";
     }
@@ -24,28 +26,48 @@ public class WebController {
         return "contact";
     }
 
-    @GetMapping("/success")
-    public String getSignupPage() {
-        return "success";
-    }
-
-    @PostMapping("/success")
-    public String postSignupPage() {
-        return "success";
-    }
-
-    @GetMapping("/merchant")
+    // Merchant view related endpoints
+    @RequestMapping("/merchant")
     public String getMerchantPage() {
         return "merchant";
     }
 
-    @GetMapping("/support")
+    // Support view related endpoints
+    @RequestMapping("/support")
     public String getSupportPage() {
         return "support";
     }
 
-    @GetMapping("/admin")
+    @RequestMapping("/list")
+    public String getListPage() {
+        // TODO: Add user list to model
+        return "list";
+    }
+
+    // Admin view related endpoints
+    @RequestMapping("/admin")
     public String getAdminPage() {
         return "admin";
     }
+
+    @RequestMapping("/admin/new-user")
+    public String getNewUserPage() {
+        return "/admin/new-user";
+    }
+
+    @RequestMapping("/admin/delete-user")
+    public String getDeleteUserPage() {
+        return "/admin/delete-user";
+    }
+
+    @RequestMapping("/admin/update-role")
+    public String getUpdateRolePage() {
+        return "/admin/update-role";
+    }
+
+    @RequestMapping("/admin/update-access")
+    public String getUpdateAccessPage() {
+        return "/admin/update-access";
+    }
+
 }

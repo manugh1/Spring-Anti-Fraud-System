@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Merchant view - Anti Fraud System</title>
+    <title>Administration - Anti Fraud System</title>
     <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -74,8 +74,8 @@
                 </div>
                 <div class="user-info">
                     <!--TODO: Update user name and role according to the currently logged in admin user-->
-                    <span class="user-name" id="admin-name">Alina <strong>Smith</strong></span>
-                    <span class="user-role">Support</span>
+                    <span class="user-name">John <strong>Doe</strong></span>
+                    <span class="user-role">Administrator</span>
                     <span class="user-status">
             <i class="fa fa-circle"></i>
             <span>Online</span>
@@ -126,13 +126,11 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <!--TODO: Update hrefs to link to the correct site-->
-                                <li><a href="#">Add a new user</a></li>
-                                <li><a href="#">View a list of active users</a></li>
-                                <li><a href="#">Manage suspicious IP addresses</a></li>
-                                <li><a href="#">Manage suspicious cards</a></li>
-                                <li><a href="#">View a transaction history for a card number</a></li>
-                                <li><a href="#">Update a transaction (manual review)</a></li>
+                                <li><a href="/web/admin/new-user">Add user</a></li>
+                                <li><a href="/web/admin/delete-user">Remove user</a></li>
+                                <li><a href="/web/list">List current users</a></li>
+                                <li><a href="/web/admin/update-role">Update user role</a></li>
+                                <li><a href="/web/admin/update-access">Update user access</a></li>
                             </ul>
                         </div>
                     </li>
@@ -223,31 +221,31 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-            <h2>Support</h2>
+            <h2>Add a new user</h2>
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">App Status</h4>
-                        <p>There are currently no events or notifications that need your attention. Have a nice day!</p>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-primary mr-2">Show events</a>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-success">OK</a>
-                    </div>
-                </div>
-                <div class="form-group col-md-12">
-                    <p id="user-greeting">Hello there!</p>
-                    <p>What would you like to do?</p>
-                    <ul>
-                        <!--TODO: Update hrefs to link to the correct site-->
-                        <li><a href="#">Add a new user</a></li>
-                        <li><a href="#">View a list of active users</a></li>
-                        <li><a href="#">Manage suspicious IP addresses</a></li>
-                        <li><a href="#">Manage suspicious cards</a></li>
-                        <li><a href="#">View a transaction history for a card number</a></li>
-                        <li><a href="#">Update a transaction (manual review)</a></li>
-                    </ul>
+                    <!--TODO: Remove success url. Redirect to landing page and add an alert via javascript-->
+                    <form action="/web/admin/new-user" method="post">
+                        <p class="hint-text">Fill in this form to add a new user:</p>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="signup-name" placeholder="Full name"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="signup-username" placeholder="Username"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="signup-password" placeholder="Password"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="signup-confirm_password"
+                                   placeholder="Confirm Password" required="required">
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" value="Sign up" onclick=send()>
+                    </form>
                 </div>
             </div>
             <footer class="text-center">
@@ -269,7 +267,6 @@
 <script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-
 <script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>

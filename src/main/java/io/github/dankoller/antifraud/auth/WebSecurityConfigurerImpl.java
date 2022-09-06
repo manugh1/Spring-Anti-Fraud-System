@@ -7,11 +7,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.io.IOException;
 
 @EnableWebSecurity
 @SuppressWarnings("unused")
@@ -51,9 +48,10 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/web/success").permitAll()
                 .mvcMatchers("/web/about").permitAll()
                 .mvcMatchers("/web/contact").permitAll()
-                .mvcMatchers("/web/merchant").hasRole("MERCHANT")
-                .mvcMatchers("/web/support").hasRole("SUPPORT")
-                .mvcMatchers("/web/admin").hasRole("ADMINISTRATOR")
+                .mvcMatchers("/web/list").hasAnyRole("SUPPORT", "ADMINISTRATOR")
+                .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
+                .mvcMatchers("/web/support/**").hasRole("SUPPORT")
+                .mvcMatchers("/web/admin/**").hasRole("ADMINISTRATOR")
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
                 .and()
                 .formLogin() // Allow form login
