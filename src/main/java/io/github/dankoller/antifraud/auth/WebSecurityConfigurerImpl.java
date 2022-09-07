@@ -48,8 +48,8 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/web/success").permitAll()
                 .mvcMatchers("/web/about").permitAll()
                 .mvcMatchers("/web/contact").permitAll()
-                .mvcMatchers("/web/list").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
+                .mvcMatchers("/web/support/list-users").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/web/support/**").hasRole("SUPPORT")
                 .mvcMatchers("/web/admin/**").hasRole("ADMINISTRATOR")
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
