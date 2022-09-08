@@ -41,6 +41,11 @@ public class WebController {
         return "merchant";
     }
 
+    @RequestMapping("/merchant/transaction")
+    public String getMerchantTransactionPage() {
+        return "/merchant/transaction";
+    }
+
     // Support view related endpoints
     @RequestMapping("/support")
     public String getSupportPage() {

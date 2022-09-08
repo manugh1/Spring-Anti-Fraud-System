@@ -218,26 +218,44 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-            <h2>Merchant</h2>
+            <h2>Submit a new transaction</h2>
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">App Status</h4>
-                        <p>There are currently no events or notifications that need your attention. Have a nice day!</p>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-primary mr-2">Show events</a>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-success">OK</a>
-                    </div>
-                </div>
-                <div class="form-group col-md-12">
-                    <p id="user-greeting">Hello there!</p>
-                    <p>What would you like to do?</p>
-                    <ul>
-                        <li><a href="/web/admin/new-user">Add user</a></li>
-                        <li><a href="/web/merchant/transaction">Post a new transaction</a></li>
-                    </ul>
+                    <!--TODO: Remove success url. Redirect to landing page and add an alert via javascript-->
+                    <form action="" method="post">
+                        <p class="hint-text">Fill in this form to submit a new transaction:</p>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="amount" placeholder="Amount"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="ip-address" placeholder="IP Address"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="card-number" inputmode="numeric"
+                                   pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19"
+                                   placeholder="Card number" required="required">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Select Region:
+                                <select id="region">
+                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="EAP">East Asia and Pacific (EAP)</option>
+                                    <option value="ECA">Europe and Central Asia (ECA)</option>
+                                    <option value="HIC">High-Income Countries (HIC)</option>
+                                    <option value="LAC">Latin America and the Caribbean (LAC)</option>
+                                    <option value="MENA">The Middle East and North Africa (MENA)</option>
+                                    <option value="SA">South Asia (SA)</option>
+                                    <option value="SSA">Sub-Saharan Africa (SSA)</option>
+                                </select>
+                            </label>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" value="Submit transaction"
+                               onclick=postTransaction()>
+                    </form>
                 </div>
             </div>
             <footer class="text-center">
@@ -256,11 +274,9 @@
 </div>
 
 <!--Custom scripts-->
-<script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/merchant/post-transaction.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>
 </html>
