@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Administration - Anti Fraud System</title>
+    <title>Merchant - Anti Fraud System</title>
     <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -73,9 +73,9 @@
                          alt="User picture">
                 </div>
                 <div class="user-info">
-                    <!-- TODO: Update username and role according to the currently logged in admin user-->
-                    <span class="user-name">John <strong>Doe</strong></span>
-                    <span class="user-role">Administrator</span>
+                    <!--TODO: Update user name and role according to the currently logged in admin user-->
+                    <span class="user-name">Joanna <strong>Appleseed</strong></span>
+                    <span class="user-role">Support</span>
                     <span class="user-status">
             <i class="fa fa-circle"></i>
             <span>Online</span>
@@ -114,7 +114,7 @@
                                         <span class="badge badge-pill badge-success">Pro</span>
                                     </a>
                                 </li>
-                                <li><a href="#">Server Dashboard</a></li>
+                                <li><a href="#">Support Dashboard</a></li>
                                 <li><a href="#">User Dashboard</a></li>
                             </ul>
                         </div>
@@ -127,10 +127,11 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/admin/delete-user">Remove user</a></li>
                                 <li><a href="/web/support/list-users">List current users</a></li>
-                                <li><a href="/web/admin/update-role">Update user role</a></li>
-                                <li><a href="/web/admin/update-access">Update user access</a></li>
+                                <li><a href="/web/support/manage-ip">Manage suspicious IPs</a></li>
+                                <li><a href="/web/support/manage-stolencard">Manage stolen cards</a></li>
+                                <li><a href="/web/support/transaction-history">Get transaction history</a></li>
+                                <li><a href="/web/support/review-transaction">Review transactions</a></li>
                             </ul>
                         </div>
                     </li>
@@ -221,27 +222,52 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-            <h2>Registered users</h2>
+            <h2>Support</h2>
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <!--Render a thymeleaf table of user and usernames-->
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">Full name</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Role</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="user : ${users}">
-                            <td th:text="${user.name}"></td>
-                            <td th:text="${user.username}"></td>
-                            <td th:text="${user.role}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <p>Transaction history for a certain card number</p>
+                    <form th:action="@{/web/support/transaction-history/}" method="post">
+                        <div class="form-group col-md-12">
+                            <label for="card-number">Card number</label>
+                            <input type="text" class="form-control" id="card-number" name="card-number"
+                                   th:name="cardnumber" placeholder="Enter card number">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-secondary" onclick="window.location.href='/web/support/transaction-history'">Reset</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-group col-md-12">
+                    <div class="form-group col-md-12">
+                        <!--Render a thymeleaf table of transactions -->
+                        <p>Full transaction history:</p>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Feedback</th>
+                                <th scope="col">IP Address</th>
+                                <th scope="col">Card Number</th>
+                                <th scope="col">Region</th>
+                                <th scope="col">Result</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="transaction : ${transactions}">
+                                <td th:text="${transaction.amount}"></td>
+                                <td th:text="${transaction.date}"></td>
+                                <td th:text="${transaction.feedback}"></td>
+                                <td th:text="${transaction.ip}"></td>
+                                <td th:text="${transaction.number}"></td>
+                                <td th:text="${transaction.region}"></td>
+                                <td th:text="${transaction.result}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <footer class="text-center">
@@ -260,12 +286,8 @@
 </div>
 
 <!--Custom scripts-->
-<script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/admin/post-delete-user.js}"></script>
 
 </body>
 </html>

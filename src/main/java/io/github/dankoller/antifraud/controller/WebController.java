@@ -1,16 +1,17 @@
 package io.github.dankoller.antifraud.controller;
 
+import io.github.dankoller.antifraud.entity.Card;
 import io.github.dankoller.antifraud.entity.IPAddress;
 import io.github.dankoller.antifraud.entity.transaction.Transaction;
+import io.github.dankoller.antifraud.persistence.TransactionRepository;
 import io.github.dankoller.antifraud.response.UserDataResponse;
+import io.github.dankoller.antifraud.service.TransactionService;
 import io.github.dankoller.antifraud.service.UserService;
 import io.github.dankoller.antifraud.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +24,12 @@ public class WebController {
 
     @Autowired
     private ValidationService validationService;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
+    private TransactionService transactionService;
 
     // Using request mapping instead of get mapping because of the redirects in the html
 
@@ -73,7 +80,9 @@ public class WebController {
     }
 
     @RequestMapping("/support/manage-stolencard")
-    public String getManageStolenCardPage() {
+    public String getManageStolenCardPage(Model model) {
+        List<Card> stolenCards = (List<Card>) validationService.getStolenCards();
+        model.addAttribute("cards", stolenCards);
         return "/support/manage-stolencard";
     }
 
@@ -83,7 +92,17 @@ public class WebController {
     }
 
     @RequestMapping("/support/transaction-history")
-    public String getTransactionHistoryPage() {
+    public String getTransactionHistoryPage(Model model,
+                                            @RequestParam(value = "cardnumber", required = false) String cardNumber) {
+        // If no card number is given, return the page with a full list of transactions
+        List<Transaction> transactions;
+        if (cardNumber == null || cardNumber.isEmpty()) {
+            transactions = transactionRepository.findAll();
+        } else {
+            // If a card number is given, return the page with a filtered list of transactions
+            transactions = transactionService.getTransactionHistory(cardNumber);
+        }
+        model.addAttribute("transactions", transactions);
         return "/support/transaction-history";
     }
 
