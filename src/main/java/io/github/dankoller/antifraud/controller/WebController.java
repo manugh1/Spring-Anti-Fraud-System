@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 
@@ -92,7 +91,7 @@ public class WebController {
     }
 
     @RequestMapping("/support/review-transaction")
-    public String getReviewTransactionPage(Model model, Principal principal) {
+    public String getReviewTransactionPage(Model model) {
         List<Transaction> transactions = transactionRepository.findAll();
 
         // Filter out transactions that have already been reviewed (= !feedback.isEmpty())
@@ -104,16 +103,10 @@ public class WebController {
         model.addAttribute("transactions", transactions);
 
         // Get the username and role of the currently logged-in user
-        String username = principal.getName();
+        String username = getCurrentUserDisplayName();
         model.addAttribute("username", username);
 
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        String userrole = authorities.iterator().next().getAuthority();
-        // Remove ROLE_ from the role
-        userrole = userrole.substring(5);
-        // Make the first letter uppercase
-        userrole = userrole.substring(0, 1).toUpperCase() + userrole.substring(1).toLowerCase();
-
+        String userrole = getCurrentUserRole();
         model.addAttribute("userrole", userrole);
 
         return "/support/review-transaction";
@@ -158,6 +151,34 @@ public class WebController {
     @RequestMapping("/admin/update-access")
     public String getUpdateAccessPage() {
         return "/admin/update-access";
+    }
+
+    // Authentication helper methods
+    private String getCurrentUserName() {
+        // Return the display name of the currently logged-in user
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    private String getCurrentUserDisplayName() {
+        // Get the currently logged-in user
+        User user = userService.findByUsername(getCurrentUserName());
+        return user.getName();
+    }
+
+    @SuppressWarnings("unchecked")
+    private String getCurrentUserRole() {
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities();
+        String userrole = authorities.iterator().next().getAuthority();
+
+        // Remove ROLE_ from the role
+        userrole = userrole.substring(5);
+        // Make the first letter uppercase
+        userrole = userrole.substring(0, 1).toUpperCase() + userrole.substring(1).toLowerCase();
+
+        return userrole;
     }
 
 }
