@@ -268,6 +268,7 @@ PUT /api/antifraud/transaction
    "feedback": "<String>"
 }
 ```
+_Feedback can be 'ALLOWED', 'MANUAL_PROCESSING' or 'PROHIBITED'_.
 
 Response:
 

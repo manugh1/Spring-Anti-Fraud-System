@@ -3,16 +3,21 @@ package io.github.dankoller.antifraud.controller;
 import io.github.dankoller.antifraud.entity.Card;
 import io.github.dankoller.antifraud.entity.IPAddress;
 import io.github.dankoller.antifraud.entity.transaction.Transaction;
+import io.github.dankoller.antifraud.entity.user.User;
 import io.github.dankoller.antifraud.persistence.TransactionRepository;
 import io.github.dankoller.antifraud.response.UserDataResponse;
 import io.github.dankoller.antifraud.service.TransactionService;
 import io.github.dankoller.antifraud.service.UserService;
 import io.github.dankoller.antifraud.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -87,7 +92,30 @@ public class WebController {
     }
 
     @RequestMapping("/support/review-transaction")
-    public String getReviewTransactionPage() {
+    public String getReviewTransactionPage(Model model, Principal principal) {
+        List<Transaction> transactions = transactionRepository.findAll();
+
+        // Filter out transactions that have already been reviewed (= !feedback.isEmpty())
+        transactions.removeIf(transaction -> !transaction.getFeedback().isEmpty());
+
+        // Remove every transaction but the first 10
+        transactions.subList(10, transactions.size()).clear();
+
+        model.addAttribute("transactions", transactions);
+
+        // Get the username and role of the currently logged-in user
+        String username = principal.getName();
+        model.addAttribute("username", username);
+
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        String userrole = authorities.iterator().next().getAuthority();
+        // Remove ROLE_ from the role
+        userrole = userrole.substring(5);
+        // Make the first letter uppercase
+        userrole = userrole.substring(0, 1).toUpperCase() + userrole.substring(1).toLowerCase();
+
+        model.addAttribute("userrole", userrole);
+
         return "/support/review-transaction";
     }
 

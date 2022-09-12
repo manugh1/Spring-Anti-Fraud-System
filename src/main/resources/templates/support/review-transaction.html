@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Merchant - Anti Fraud System</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/mainStyle.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--Logout navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="/web/" class="navbar-brand"><b>Anti Fraud System</b></a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+        <div class="navbar-nav">
+            <a href="/web/" class="nav-item nav-link">Home</a>
+            <a href="/web/about/" class="nav-item nav-link">About</a>
+            <div class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
+                <div class="dropdown-menu">
+                    <a href="/web/merchant/" class="dropdown-item">Merchant view</a>
+                    <a href="/web/support/" class="dropdown-item">Support view</a>
+                    <a href="/web/admin/" class="dropdown-item">Administration</a>
+                </div>
+            </div>
+            <a href="/web/contact" class="nav-item nav-link">Contact</a>
+        </div>
+        <form class="navbar-form form-inline">
+            <div class="input-group search-box">
+                <input type="text" id="search" class="form-control" placeholder="Search here...">
+                <div class="input-group-append">
+					<span class="input-group-text">
+						<i class="material-icons"></i>
+					</span>
+                </div>
+            </div>
+        </form>
+        <div class="navbar-nav ml-auto action-buttons">
+            <div class="nav-item dropdown">
+                <a th:href="@{/logout}" class="nav-link dropdown-toggle mr-4">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--Main content-->
+<div class="page-wrapper chiller-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">Menu</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded"
+                         src="https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-512.png"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <!--Add thymeleaf username-->
+                    <span class="user-name" th:text="${username}"></span>
+                    <span class="user-role" th:text="${userrole}"></span>
+                    <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+                </div>
+            </div>
+            <!-- sidebar-header  -->
+            <div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search...">
+                        <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu">
+                        <span>General</span>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                            <span class="badge badge-pill badge-warning">New</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Custom Dashboard
+                                        <span class="badge badge-pill badge-success">Pro</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">Support Dashboard</a></li>
+                                <li><a href="#">User Dashboard</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>Tasks</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li><a href="/web/admin/new-user">Add user</a></li>
+                                <li><a href="/web/support/list-users">List current users</a></li>
+                                <li><a href="/web/support/manage-ip">Manage suspicious IPs</a></li>
+                                <li><a href="/web/support/manage-stolencard">Manage stolen cards</a></li>
+                                <li><a href="/web/support/transaction-history">Get transaction history</a></li>
+                                <li><a href="/web/support/review-transaction">Review transactions</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-chart-line"></i>
+                            <span>Charts</span>
+                            <span class="badge badge-pill badge-danger">4</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Pie chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Line chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Bar chart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Histogram</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="fa fa-globe"></i>
+                            <span>Maps</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">Google maps</a>
+                                </li>
+                                <li>
+                                    <a href="#">Open street map</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="header-menu">
+                        <span>Extra</span>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book"></i>
+                            <span>Documentation</span>
+                            <span class="badge badge-pill badge-primary">Beta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-calendar"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-folder"></i>
+                            <span>Examples</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container-fluid">
+            <h2>Support</h2>
+            <hr>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading">The following transactions require your attention:</h4>
+                        <div class="form-group col-md-12">
+                            <div class="form-group col-md-12">
+                                <!--Render a thymeleaf table of transactions -->
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">IP Address</th>
+                                        <th scope="col">Card Number</th>
+                                        <th scope="col">Region</th>
+                                        <th scope="col">Result</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="transaction : ${transactions}">
+                                        <th scope="row" th:text="${transaction.id}"></th>
+                                        <td th:text="${transaction.amount}"></td>
+                                        <td th:text="${transaction.date}"></td>
+                                        <td th:text="${transaction.ip}"></td>
+                                        <td th:text="${transaction.number}"></td>
+                                        <td th:text="${transaction.region}"></td>
+                                        <td th:text="${transaction.result}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a href="#" target="_blank"
+                           class="btn btn-sm btn-danger mr-2">Dismiss</a>
+                        <a href="#" target="_blank"
+                           class="btn btn-sm btn-success">OK</a>
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    <h3>Add transaction feedback</h3>
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="transactionId">Transaction ID</label>
+                            <input type="text" class="form-control" id="transactionId" name="transactionId"
+                                   placeholder="Enter transaction ID">
+                        </div>
+                        <div class="form-group">
+                            <label>Select Feedback:
+                                <select id="feedback">
+                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="ALLOWED">Allow</option>
+                                    <option value="MANUAL_PROCESSING">Manual processing</option>
+                                    <option value="PROHIBITED">Prohibit</option>
+                                </select>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick=putFeedback()>Submit</button>
+                    </form>
+                </div>
+            </div>
+            <footer class="text-center">
+                <div class="mb-2">
+                    <small id="copyright-footer">© Dan Koller</small>
+                </div>
+                <div>
+                    <a href="https://github.com/dan-koller" target="_blank">
+                        <img alt="GitHub followers"
+                             src="https://img.shields.io/github/followers/dan-koller?label=github&style=social"/>
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<!--Custom scripts-->
+<script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
+
+<script type="text/javascript" th:src="@{/scripts/support/put-feedback.js}"></script>
+
+</body>
+</html>
