@@ -42,7 +42,7 @@ public class Transaction {
 
     // Custom JSON properties
     @JsonProperty("transactionId")
-    Long getId() {
+    public Long getId() {
         return id;
     }
 
