@@ -73,9 +73,9 @@
                          alt="User picture">
                 </div>
                 <div class="user-info">
-                    <!-- TODO: Update username and role according to the currently logged in admin user-->
-                    <span class="user-name">John <strong>Doe</strong></span>
-                    <span class="user-role">Administrator</span>
+                    <!--Add thymeleaf username and role-->
+                    <span class="user-name" th:text="${fullname}"></span>
+                    <span class="user-role" th:text="${userrole}"></span>
                     <span class="user-status">
             <i class="fa fa-circle"></i>
             <span>Online</span>

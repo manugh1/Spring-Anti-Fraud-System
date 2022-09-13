@@ -3,24 +3,28 @@ package io.github.dankoller.antifraud.controller;
 import io.github.dankoller.antifraud.entity.Card;
 import io.github.dankoller.antifraud.entity.IPAddress;
 import io.github.dankoller.antifraud.entity.transaction.Transaction;
-import io.github.dankoller.antifraud.entity.user.User;
 import io.github.dankoller.antifraud.persistence.TransactionRepository;
 import io.github.dankoller.antifraud.response.UserDataResponse;
 import io.github.dankoller.antifraud.service.TransactionService;
 import io.github.dankoller.antifraud.service.UserService;
 import io.github.dankoller.antifraud.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
+
+/**
+ * This controller is used to handle all requests to the private part of the website.
+ * Authentication is required to access these endpoints and therefore security configuration is needed.
+ * Also, the private and public parts use different model attributes and therefore need to be handled by different
+ * controllers.
+ */
 
 @Controller
 @RequestMapping("/web")
+@ControllerAdvice(basePackages = "io.github.dankoller.antifraud.controller.GlobalWebControllerAdvice")
 public class WebController {
 
     @Autowired
@@ -101,14 +105,6 @@ public class WebController {
         transactions.subList(10, transactions.size()).clear();
 
         model.addAttribute("transactions", transactions);
-
-        // Get the username and role of the currently logged-in user
-        String username = getCurrentUserDisplayName();
-        model.addAttribute("username", username);
-
-        String userrole = getCurrentUserRole();
-        model.addAttribute("userrole", userrole);
-
         return "/support/review-transaction";
     }
 
@@ -152,33 +148,4 @@ public class WebController {
     public String getUpdateAccessPage() {
         return "/admin/update-access";
     }
-
-    // Authentication helper methods
-    private String getCurrentUserName() {
-        // Return the display name of the currently logged-in user
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-
-    private String getCurrentUserDisplayName() {
-        // Get the currently logged-in user
-        User user = userService.findByUsername(getCurrentUserName());
-        return user.getName();
-    }
-
-    @SuppressWarnings("unchecked")
-    private String getCurrentUserRole() {
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getAuthorities();
-        String userrole = authorities.iterator().next().getAuthority();
-
-        // Remove ROLE_ from the role
-        userrole = userrole.substring(5);
-        // Make the first letter uppercase
-        userrole = userrole.substring(0, 1).toUpperCase() + userrole.substring(1).toLowerCase();
-
-        return userrole;
-    }
-
 }
