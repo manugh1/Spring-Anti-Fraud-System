@@ -1,4 +1,4 @@
-function send() {
+function sendSignup() {
     let object = {
         name: document.getElementById("signup-name").value,
         username: document.getElementById("signup-username").value,

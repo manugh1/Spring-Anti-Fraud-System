@@ -46,12 +46,12 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/about")
+    @RequestMapping("/about")
     public String getAboutPage() {
         return "about";
     }
 
-    @GetMapping("/contact")
+    @RequestMapping("/contact")
     public String getContactPage() {
         return "contact";
     }

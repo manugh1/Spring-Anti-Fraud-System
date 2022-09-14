@@ -45,7 +45,6 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/auth/**").hasRole("ADMINISTRATOR")
                 .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT")
                 // Web endpoints
-                .mvcMatchers("/web/success").permitAll()
                 .mvcMatchers("/web/about").permitAll()
                 .mvcMatchers("/web/contact").permitAll()
                 .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
