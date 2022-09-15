@@ -126,8 +126,8 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/merchant/new-transaction">Post a new transaction</a></li>
+                                <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                                <li><a th:href="@{/web/merchant/new-transaction}">Post a new transaction</a></li>
                             </ul>
                         </div>
                     </li>
@@ -235,8 +235,8 @@
                     <p id="user-greeting">Hello there!</p>
                     <p>What would you like to do?</p>
                     <ul>
-                        <li><a href="/web/admin/new-user">Add user</a></li>
-                        <li><a href="/web/merchant/new-transaction">Post a new transaction</a></li>
+                        <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                        <li><a th:href="@{/web/merchant/new-transaction}">Post a new transaction</a></li>
                     </ul>
                 </div>
             </div>
@@ -256,11 +256,9 @@
 </div>
 
 <!--Custom scripts-->
-<script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>
 </html>

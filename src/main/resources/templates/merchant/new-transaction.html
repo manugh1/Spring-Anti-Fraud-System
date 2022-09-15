@@ -126,8 +126,8 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/merchant/new-transaction">Post a new transaction</a></li>
+                                <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                                <li><a th:href="@{/web/merchant/new-transaction}">Post a new transaction</a></li>
                             </ul>
                         </div>
                     </li>
@@ -222,8 +222,7 @@
             <hr>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <!--TODO: Remove success url. Redirect to landing page and add an alert via javascript-->
-                    <form action="" method="post">
+                    <form th:action="@{/web/merchant/new-transaction}" method="post">
                         <p class="hint-text">Fill in this form to submit a new transaction:</p>
                         <div class="form-group">
                             <input type="text" class="form-control" id="amount" placeholder="Amount"
