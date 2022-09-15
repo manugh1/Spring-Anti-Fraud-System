@@ -126,11 +126,11 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/admin/delete-user">Remove user</a></li>
-                                <li><a href="/web/support/list-users">List current users</a></li>
-                                <li><a href="/web/admin/update-role">Update user role</a></li>
-                                <li><a href="/web/admin/update-access">Update user access</a></li>
+                                <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                                <li><a th:href="@{/web/admin/delete-user}">Remove user</a></li>
+                                <li><a th:href="@{/web/support/list-users}">List current users</a></li>
+                                <li><a th:href="@{/web/admin/update-role}">Update user role</a></li>
+                                <li><a th:href="@{/web/admin/update-access}">Update user access</a></li>
                             </ul>
                         </div>
                     </li>
@@ -238,11 +238,11 @@
                     <p id="user-greeting">Hello there!</p>
                     <p>What would you like to do?</p>
                     <ul>
-                        <li><a href="/web/admin/new-user">Add a new user</a></li>
-                        <li><a href="/web/admin/delete-user">Remove an existing user</a></li>
-                        <li><a href="/web/support/list-users">View a list of active users</a></li>
-                        <li><a href="/web/admin/update-role">Update the role of an existing user</a></li>
-                        <li><a href="/web/admin/update-access">Update the access level of an existing user</a></li>
+                        <li><a th:href="@{/web/admin/new-user}">Add a new user</a></li>
+                        <li><a th:href="@{/web/admin/delete-user}">Remove an existing user</a></li>
+                        <li><a th:href="@{/web/support/list-users}">View a list of active users</a></li>
+                        <li><a th:href="@{/web/admin/update-role}">Update the role of an existing user</a></li>
+                        <li><a th:href="@{/web/admin/update-access}">Update the access level of an existing user</a></li>
                     </ul>
                 </div>
             </div>
@@ -262,11 +262,9 @@
 </div>
 
 <!--Custom scripts-->
-<script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
+<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>
 </html>
