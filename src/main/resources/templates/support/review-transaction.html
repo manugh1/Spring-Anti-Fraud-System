@@ -126,12 +126,12 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/support/list-users">List current users</a></li>
-                                <li><a href="/web/support/manage-ip">Manage suspicious IPs</a></li>
-                                <li><a href="/web/support/manage-stolencard">Manage stolen cards</a></li>
-                                <li><a href="/web/support/transaction-history">Get transaction history</a></li>
-                                <li><a href="/web/support/review-transaction">Review transactions</a></li>
+                                <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                                <li><a th:href="@{/web/support/list-users}">List current users</a></li>
+                                <li><a th:href="@{/web/support/manage-ip}">Manage suspicious IPs</a></li>
+                                <li><a th:href="@{/web/support/manage-stolencard}">Manage stolen cards</a></li>
+                                <li><a th:href="@{/web/support/transaction-history}">Get transaction history</a></li>
+                                <li><a th:href="@{/web/support/review-transaction}">Review transactions</a></li>
                             </ul>
                         </div>
                     </li>
@@ -265,7 +265,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <h3>Add transaction feedback</h3>
-                    <form action="" method="post">
+                    <form th:action="@{/web/support/review-transaction}" method="post">
                         <div class="form-group">
                             <label for="transactionId">Transaction ID</label>
                             <input type="text" class="form-control" id="transactionId" name="transactionId"
@@ -301,10 +301,9 @@
 </div>
 
 <!--Custom scripts-->
+<script type="text/javascript" th:src="@{/scripts/support/put-feedback.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/support/put-feedback.js}"></script>
 
 </body>
 </html>

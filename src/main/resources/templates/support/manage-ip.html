@@ -126,12 +126,12 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/support/list-users">List current users</a></li>
-                                <li><a href="/web/support/manage-ip">Manage suspicious IPs</a></li>
-                                <li><a href="/web/support/manage-stolencard">Manage stolen cards</a></li>
-                                <li><a href="/web/support/transaction-history">Get transaction history</a></li>
-                                <li><a href="/web/support/review-transaction">Review transactions</a></li>
+                                <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                                <li><a th:href="@{/web/support/list-users}">List current users</a></li>
+                                <li><a th:href="@{/web/support/manage-ip}">Manage suspicious IPs</a></li>
+                                <li><a th:href="@{/web/support/manage-stolencard}">Manage stolen cards</a></li>
+                                <li><a th:href="@{/web/support/transaction-history}">Get transaction history</a></li>
+                                <li><a th:href="@{/web/support/review-transaction}">Review transactions</a></li>
                             </ul>
                         </div>
                     </li>
@@ -247,7 +247,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <p>Manage suspicious IPs</p>
-                    <form action="/web/support/manage-ip" method="post">
+                    <form th:action="@{/web/support/manage-ip}" method="post">
                         <div class="form-group col-md-12">
                             <label for="ip-address">IP Address</label>
                             <input type="text" class="form-control" id="ip-address" name="ip-address"
@@ -283,11 +283,9 @@
 </div>
 
 <!--Custom scripts-->
+<script type="text/javascript" th:src="@{/scripts/support/manage-ip.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/handle-side-bar.js}"></script>
 <script type="text/javascript" th:src="@{/scripts/set-footer-text.js}"></script>
-<script type="text/javascript" th:src="@{/scripts/support/manage-ip.js}"></script>
-
-<script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
 
 </body>
 </html>

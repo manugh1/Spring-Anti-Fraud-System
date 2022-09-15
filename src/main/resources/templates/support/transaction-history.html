@@ -126,12 +126,12 @@
                         </a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="/web/admin/new-user">Add user</a></li>
-                                <li><a href="/web/support/list-users">List current users</a></li>
-                                <li><a href="/web/support/manage-ip">Manage suspicious IPs</a></li>
-                                <li><a href="/web/support/manage-stolencard">Manage stolen cards</a></li>
-                                <li><a href="/web/support/transaction-history">Get transaction history</a></li>
-                                <li><a href="/web/support/review-transaction">Review transactions</a></li>
+                                <li><a th:href="@{/web/admin/new-user}">Add user</a></li>
+                                <li><a th:href="@{/web/support/list-users}">List current users</a></li>
+                                <li><a th:href="@{/web/support/manage-ip}">Manage suspicious IPs</a></li>
+                                <li><a th:href="@{/web/support/manage-stolencard}">Manage stolen cards</a></li>
+                                <li><a th:href="@{/web/support/transaction-history}">Get transaction history</a></li>
+                                <li><a th:href="@{/web/support/review-transaction}">Review transactions</a></li>
                             </ul>
                         </div>
                     </li>
@@ -235,7 +235,9 @@
                         </div>
                         <div class="form-group col-md-12">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="reset" class="btn btn-secondary" onclick="window.location.href='/web/support/transaction-history'">Reset</button>
+                            <button type="reset" class="btn btn-secondary"
+                                    onclick="window.location.href='/web/support/transaction-history'">Reset
+                            </button>
                         </div>
                     </form>
                 </div>
