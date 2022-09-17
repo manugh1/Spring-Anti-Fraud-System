@@ -15,98 +15,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<!--Login navbar-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a th:href="@{/web/}" class="navbar-brand"><b>Anti Fraud System</b></a>
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <!-- Collection of nav links, forms, and other content for toggling -->
-    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
-        <div class="navbar-nav">
-            <a th:href="@{/web/}" class="nav-item nav-link">Home</a>
-            <a th:href="@{/web/about}" class="nav-item nav-link">About</a>
-            <div class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
-                <div class="dropdown-menu">
-                    <a th:href="@{/web/merchant}" class="dropdown-item">Merchant view</a>
-                    <a th:href="@{/web/support}" class="dropdown-item">Support view</a>
-                    <a th:href="@{/web/admin}" class="dropdown-item">Administration</a>
-                </div>
-            </div>
-            <a th:href="@{/web/contact}" class="nav-item nav-link">Contact</a>
-        </div>
-        <form class="navbar-form form-inline">
-            <div class="input-group search-box">
-                <input type="text" id="search" class="form-control" placeholder="Search here...">
-                <div class="input-group-append">
-					<span class="input-group-text">
-						<i class="material-icons"></i>
-					</span>
-                </div>
-            </div>
-        </form>
-        <div class="navbar-nav ml-auto action-buttons">
-            <div class="nav-item dropdown">
-                <a th:href="@{/#}" data-toggle="dropdown" class="nav-link dropdown-toggle mr-4">Login</a>
-                <div class="dropdown-menu action-form">
-                    <form th:action="@{/login}" method="post">
-                        <p class="hint-text">Sign in with your social media account</p>
-                        <div class="form-group social-btn clearfix">
-                            <a th:href="@{/#}" class="btn btn-secondary facebook-btn float-left"><i
-                                    class="fa fa-facebook"></i> Facebook</a>
-                            <a th:href="@{/#}" class="btn btn-secondary twitter-btn float-right"><i
-                                    class="fa fa-twitter"></i> Twitter</a>
-                        </div>
-                        <div class="or-seperator"><b>or</b></div>
-                        <div class="form-group">
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Username"
-                                   required="" autofocus="">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" id="password" name="password" class="form-control"
-                                   placeholder="Password" required="">
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-block" value="Login">
-                        <div class="text-center mt-2">
-                            <a href="#">Forgot Your password?</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="nav-item dropdown">
-                <a th:href="@{/#}" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn"
-                   aria-expanded="false">Sign up</a>
-                <div class="dropdown-menu action-form">
-                    <form th:action="@{/#}" method="post">
-                        <p class="hint-text">Fill in this form to create your account!</p>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="signup-name" placeholder="Your name"
-                                   required="required">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="signup-username" placeholder="Username"
-                                   required="required">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="signup-password" placeholder="Password"
-                                   required="required">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="signup-confirm_password"
-                                   placeholder="Confirm Password" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a
-                                    th:href="@{/#}">Terms &amp; Conditions</a></label>
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-block" value="Sign up" onclick=sendSignup()>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
+<!--Dynamic navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:replace="fragments/navbar :: navbar"></nav>
 
 <!--Main content-->
 <div class="page-wrapper chiller-theme toggled">
@@ -174,7 +84,7 @@
             </div>
             <hr>
 
-            <footer class="text-center" th:replace="fragments/footer :: footer"></footer>
+            <footer class="text-center" th:insert="fragments/footer :: footer"></footer>
         </div>
     </main>
 </div>

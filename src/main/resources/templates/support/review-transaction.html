@@ -14,44 +14,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<!--Logout navbar-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a th:href="@{/web/}" class="navbar-brand"><b>Anti Fraud System</b></a>
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <!-- Collection of nav links, forms, and other content for toggling -->
-    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
-        <div class="navbar-nav">
-            <a th:href="@{/web/}" class="nav-item nav-link">Home</a>
-            <a th:href="@{/web/about}" class="nav-item nav-link">About</a>
-            <div class="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
-                <div class="dropdown-menu">
-                    <a th:href="@{/web/merchant}" class="dropdown-item">Merchant view</a>
-                    <a th:href="@{/web/support}" class="dropdown-item">Support view</a>
-                    <a th:href="@{/web/admin}" class="dropdown-item">Administration</a>
-                </div>
-            </div>
-            <a th:href="@{/web/contact}" class="nav-item nav-link">Contact</a>
-        </div>
-        <form class="navbar-form form-inline">
-            <div class="input-group search-box">
-                <input type="text" id="search" class="form-control" placeholder="Search here...">
-                <div class="input-group-append">
-					<span class="input-group-text">
-						<i class="material-icons"></i>
-					</span>
-                </div>
-            </div>
-        </form>
-        <div class="navbar-nav ml-auto action-buttons">
-            <div class="nav-item dropdown">
-                <a th:href="@{/logout}" class="nav-link dropdown-toggle mr-4">Logout</a>
-            </div>
-        </div>
-    </div>
-</nav>
+<!--Dynamic navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:replace="fragments/navbar :: navbar"></nav>
 
 <!--Main content-->
 <div class="page-wrapper chiller-theme toggled">
