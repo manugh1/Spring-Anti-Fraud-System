@@ -39,7 +39,7 @@ public class WebController {
     @Autowired
     private TransactionService transactionService;
 
-    // Using request mapping instead of get mapping because of the redirects in the html
+    // Using request mapping instead of get mapping because of different request methods available for the same endpoint
 
     @RequestMapping("/")
     public String getIndexPage() {
