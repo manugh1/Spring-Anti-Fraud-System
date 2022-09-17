@@ -268,6 +268,7 @@ PUT /api/antifraud/transaction
    "feedback": "<String>"
 }
 ```
+
 _Feedback can be 'ALLOWED', 'MANUAL_PROCESSING' or 'PROHIBITED'_.
 
 Response:
@@ -356,6 +357,8 @@ model-view-controller pattern. The application consists of the following compone
 - [MySQL 8.0.30](https://www.mysql.com/)
 - [MySQL Connector 8.0.30](https://dev.mysql.com/downloads/connector/j/)
 - [Lombok 1.18.24](https://projectlombok.org/)
+- [Thymeleaf 3.0.12](https://www.thymeleaf.org/)
+- [Thymleaf Extras Spring Security 3.0.4](https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5/3.0.4.RELEASE)
 
 ## Roadmap
 
