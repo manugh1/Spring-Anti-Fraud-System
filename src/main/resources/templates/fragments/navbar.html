@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -104,6 +105,10 @@
     </div>
 </div>
 <!--Logout area-->
+<div class="nav-item dropdown" th:fragment="navbar-logout">
+    <!--Information about the currently logged-in user-->
+    <a class="nav-link mr-4">Signed in as <b><span sec:authentication="name"></span></b></a>
+</div>
 <div class="nav-item dropdown" th:fragment="navbar-logout">
     <a th:href="@{/logout}" class="nav-link dropdown-toggle mr-4">Logout</a>
 </div>
