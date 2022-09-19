@@ -30,16 +30,7 @@
             <h2>Merchant</h2>
             <hr>
             <div class="row">
-                <div class="form-group col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">App Status</h4>
-                        <p>There are currently no events or notifications that need your attention. Have a nice day!</p>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-primary mr-2">Show events</a>
-                        <a href="#" target="_blank"
-                           class="btn btn-sm btn-success">OK</a>
-                    </div>
-                </div>
+                <div class="form-group col-md-12" th:replace="fragments/content :: content-notification"></div>
                 <div class="form-group col-md-12">
                     <p id="user-greeting">Hello there!</p>
                     <p>What would you like to do?</p>
