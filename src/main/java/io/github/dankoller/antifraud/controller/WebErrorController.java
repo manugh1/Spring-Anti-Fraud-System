@@ -17,7 +17,7 @@ public class WebErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (status != null) {
-            Integer statusCode = Integer.valueOf(status.toString());
+            int statusCode = Integer.parseInt(status.toString());
 
             // Add status code to model
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
