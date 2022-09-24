@@ -48,6 +48,9 @@
 </nav>
 <!--Login area-->
 <div class="nav-item dropdown" th:fragment="navbar-login">
+    <!--Include login script-->
+    <script type="text/javascript" th:src="@{/scripts/post-login-form.js}"></script>
+    <!--Login form-->
     <a th:href="@{/#}" data-toggle="dropdown" class="nav-link dropdown-toggle mr-4">Login</a>
     <div class="dropdown-menu action-form">
         <form th:action="@{/login}" method="post">
@@ -75,6 +78,9 @@
     </div>
 </div>
 <div class="nav-item dropdown" th:fragment="navbar-login">
+    <!--Include signup script-->
+    <script type="text/javascript" th:src="@{/scripts/signup-new-user.js}"></script>
+    <!--Signup form-->
     <a th:href="@{/web/}" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn"
        aria-expanded="false">Sign up</a>
     <div class="dropdown-menu action-form">

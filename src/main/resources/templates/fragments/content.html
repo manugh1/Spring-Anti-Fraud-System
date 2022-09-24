@@ -6,6 +6,11 @@
     <title>Content</title>
 </head>
 <body>
+<!--User greeting-->
+<p id="user-greeting" th:fragment="user-greeting">
+    <!--Update greeting dynamically based on current daytime-->
+    <script type="text/javascript" th:src="@{/scripts/set-greeting.js}"></script>
+</p>
 <!--General content notifications area-->
 <div class="form-group col-md-12" th:fragment="content-notification">
     <div class="alert alert-success" role="alert">
