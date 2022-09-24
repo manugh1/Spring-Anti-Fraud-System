@@ -107,7 +107,7 @@
 <!--Logout area-->
 <div class="nav-item dropdown" th:fragment="navbar-logout">
     <!--Information about the currently logged-in user-->
-    <a class="nav-link mr-4">Signed in as <b><span sec:authentication="name"></span></b></a>
+    <a th:href="@{/web/profile}" class="nav-link mr-4">Signed in as <b><span sec:authentication="name"></span></b></a>
 </div>
 <div class="nav-item dropdown" th:fragment="navbar-logout">
     <a th:href="@{/logout}" class="nav-link dropdown-toggle mr-4">Logout</a>

@@ -56,6 +56,12 @@ public class WebController {
         return "contact";
     }
 
+    // Profile page for logged in users
+    @RequestMapping("/profile")
+    public String getProfilePage() {
+        return "profile";
+    }
+
     // Merchant view related endpoints
     @RequestMapping("/merchant")
     public String getMerchantPage() {
