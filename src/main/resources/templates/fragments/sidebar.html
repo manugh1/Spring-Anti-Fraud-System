@@ -49,7 +49,7 @@
                 <li class="header-menu"><span>General</span></li>
                 <li class="sidebar-dropdown">
                     <a href="#">
-                        <i class="fa fa-tachometer-alt"></i>
+                        <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                         <span class="badge badge-pill badge-warning">New</span>
                     </a>
@@ -67,10 +67,11 @@
                 </li>
                 <li class="sidebar-dropdown">
                     <a href="#">
-                        <i class="fa fa-shopping-cart"></i>
+                        <i class="fa fa-tasks"></i>
                         <span>Tasks</span>
+                        <span id="tasks-count" class="badge badge-pill badge-danger"></span>
                     </a>
-                    <div class="sidebar-submenu">
+                    <div id="tasks-menu" class="sidebar-submenu">
                         <!--Admin related links-->
                         <ul sec:authorize="hasRole('ADMINISTRATOR')"
                             th:replace="fragments/sidebar :: admin-sidebar-links"></ul>
@@ -81,21 +82,8 @@
                         <ul sec:authorize="hasRole('SUPPORT')"
                             th:replace="fragments/sidebar :: support-sidebar-links"></ul>
                     </div>
-                </li>
-                <li class="sidebar-dropdown">
-                    <a href="#">
-                        <i class="fa fa-chart-line"></i>
-                        <span>Charts</span>
-                        <span class="badge badge-pill badge-danger">4</span>
-                    </a>
-                    <div class="sidebar-submenu">
-                        <ul>
-                            <li><a href="#">Pie chart</a></li>
-                            <li><a href="#">Line chart</a></li>
-                            <li><a href="#">Bar chart</a></li>
-                            <li><a href="#">Histogram</a></li>
-                        </ul>
-                    </div>
+                    <!--JS block to show the number of tasks-->
+                    <script th:src="@{/scripts/sidebar-count-tasks.js}"></script>
                 </li>
                 <li class="sidebar-dropdown">
                     <a href="#">
@@ -104,8 +92,8 @@
                     </a>
                     <div class="sidebar-submenu">
                         <ul>
-                            <li><a href="#">Google maps</a></li>
-                            <li><a href="#">Open street map</a></li>
+                            <li><a href="https://maps.google.com">Google maps</a></li>
+                            <li><a href="https://www.openstreetmap.org/">Open street map</a></li>
                         </ul>
                     </div>
                 </li>
@@ -121,7 +109,7 @@
                 </li>
                 <li>
                     <a th:href="@{/web/profile}">
-                        <i class="fa fa-calendar"></i>
+                        <i class="fa fa-user"></i>
                         <span>Profile</span>
                     </a>
                 </li>
