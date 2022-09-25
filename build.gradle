@@ -43,6 +43,10 @@ dependencies {
 //	runtimeOnly 'com.h2database:h2:1.4.200'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
 	implementation 'mysql:mysql-connector-java:8.0.15'
+
+	// Spring boot test and JUnit 5
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
 }
 
 tasks.named('test') {
