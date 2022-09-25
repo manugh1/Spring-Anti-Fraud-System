@@ -21,9 +21,17 @@
             <div class="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Services</a>
                 <div class="dropdown-menu">
-                    <a th:href="@{/web/merchant}" class="dropdown-item">Merchant view</a>
-                    <a th:href="@{/web/support}" class="dropdown-item">Support view</a>
-                    <a th:href="@{/web/admin}" class="dropdown-item">Administration</a>
+                    <!--If there is no user authenticated, show all links-->
+                    <a sec:authorize="isAnonymous()" th:href="@{/web/merchant}" class="dropdown-item">Merchant</a>
+                    <a sec:authorize="isAnonymous()" th:href="@{/web/support}" class="dropdown-item">Support</a>
+                    <a sec:authorize="isAnonymous()" th:href="@{/web/admin}" class="dropdown-item">Administration</a>
+                    <!--If a user is authenticated, only show them the link matching their role-->
+                    <a sec:authorize="hasRole('MERCHANT')" th:href="@{/web/merchant}"
+                       class="dropdown-item">Merchant</a>
+                    <a sec:authorize="hasRole('SUPPORT')" th:href="@{/web/support}"
+                       class="dropdown-item">Support</a>
+                    <a sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/web/admin}"
+                       class="dropdown-item">Administration</a>
                 </div>
             </div>
             <a th:href="@{/web/contact}" class="nav-item nav-link">Contact</a>
