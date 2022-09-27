@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
 
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
@@ -51,10 +51,8 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
                 .mvcMatchers("/web/support/list-users").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/web/support/**").hasRole("SUPPORT")
-
-                // Anyone can create a new user TODO: Move to a more public endpoint
+                // Anyone can create a new user
                 .mvcMatchers("/web/admin/new-user").hasAnyRole("SUPPORT", "MERCHANT", "ADMINISTRATOR")
-
                 .mvcMatchers("/web/admin/**").hasRole("ADMINISTRATOR")
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
                 .and()
