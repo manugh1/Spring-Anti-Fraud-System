@@ -6,6 +6,7 @@ import io.github.dankoller.antifraud.controller.ValidationController;
 import io.github.dankoller.antifraud.controller.WebController;
 import io.github.dankoller.antifraud.entity.user.User;
 import io.github.dankoller.antifraud.persistence.UserRepository;
+import io.github.dankoller.antifraud.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,9 @@ class AntifraudApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AuthorizationController authorizationController;
@@ -56,7 +60,7 @@ class AntifraudApplicationTests {
     // Test if a user can be deleted
     @Test
     void testUserDeletion() {
-        userRepository.delete(user);
+        userService.deleteUser(user.getUsername());
         assertThat(userRepository.findByUsername("testuser")).isNull();
     }
 
