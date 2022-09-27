@@ -16,11 +16,33 @@ To build and run this project you need:
 
 ## How to use
 
-In its current stage*, you can only access the endpoints using a browser or a tool that allows you to send HTTP requests
+Clone the repository and run the following commands to build and run the project:
+
+```shell
+./gradlew build
+./gradlew bootRun
+```
+
+If you're going to use MySQL (recommended), you need to define the following environment variables:
+
+```shell
+export SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/antifraud
+export SPRING_DATASOURCE_USERNAME=root
+export SPRING_DATASOURCE_PASSWORD=your_password
+```
+
+You can also define these variables in a `.env` file in the `resources/` directory of the project.
+_Alternatively, you can use an in-memory database (like H2) by configuring the `build.gradle`
+and `application.properties` files._
+
+You can only access the endpoints using a browser or a tool that allows you to send HTTP requests
 like [Postman](https://www.getpostman.com/). There are several endpoints that you can use to interact with the system.
 Post a request to the according endpoint in a format shown in the examples below.
 
-_*It is planned to add a web interface for the system in the future. Check the roadmap below._
+If you run the application, you can also access the web interface at [http://localhost:28852/](http://localhost:28852/)
+and access the services.
+
+**Please note, that the first user you create will be an admin. This can only be changed in the database.**
 
 ### Processes
 
@@ -37,7 +59,7 @@ _*It is planned to add a web interface for the system in the future. Check the r
 - [Add transaction feedback](#add-transaction-feedback)
 - [Get transaction history for a given card number](#get-transaction-history)
 
-## Endpoints
+## API Endpoints
 
 |   | Anonymous  | MERCHANT  | ADMINISTRATOR  | SUPPORT  |
 |---|---|---|---|---|
