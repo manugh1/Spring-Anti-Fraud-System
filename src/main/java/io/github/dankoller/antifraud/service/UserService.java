@@ -3,6 +3,7 @@ package io.github.dankoller.antifraud.service;
 import io.github.dankoller.antifraud.entity.Role;
 import io.github.dankoller.antifraud.entity.user.User;
 import io.github.dankoller.antifraud.persistence.UserRepository;
+import io.github.dankoller.antifraud.request.LoginRequest;
 import io.github.dankoller.antifraud.request.UserDTO;
 import io.github.dankoller.antifraud.response.UserDataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,28 @@ public class UserService {
      */
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    /**
+     * Login a user by validating the username and password.
+     *
+     * @param loginRequest The login request object containing the username and password
+     * @return UserDataResponse object containing the user's information
+     */
+    public UserDataResponse login(LoginRequest loginRequest) {
+        User user = findByUsername(loginRequest.getUsername());
+
+        // Check if user exists
+        if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+
+        // Check if password is correct
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
+
+        // Check if user is locked
+        if (!user.isAccountNonLocked()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is locked");
+
+        return UserDataResponse.createUserDataResponse(user);
     }
 
     /**

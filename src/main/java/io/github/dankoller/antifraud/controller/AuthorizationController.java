@@ -1,6 +1,7 @@
 package io.github.dankoller.antifraud.controller;
 
 import io.github.dankoller.antifraud.entity.user.User;
+import io.github.dankoller.antifraud.request.LoginRequest;
 import io.github.dankoller.antifraud.request.UserDTO;
 import io.github.dankoller.antifraud.response.UserDataResponse;
 import io.github.dankoller.antifraud.service.AuthorizationService;
@@ -31,6 +32,16 @@ public class AuthorizationController {
 
     @Autowired
     private AuthorizationService authorizationService;
+
+    /**
+     * Login endpoint for existing users.
+     *
+     */
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        UserDataResponse userDataResponse = userService.login(loginRequest);
+        return new ResponseEntity<>(userDataResponse, HttpStatus.OK);
+    }
 
     /**
      * Signup a new user.

@@ -6,6 +6,7 @@ import io.github.dankoller.antifraud.entity.transaction.TransactionResult;
 import io.github.dankoller.antifraud.persistence.CardRepository;
 import io.github.dankoller.antifraud.persistence.TransactionRepository;
 import io.github.dankoller.antifraud.util.CardValidator;
+import io.github.dankoller.antifraud.util.IPAddressValidator;
 import io.github.dankoller.antifraud.util.TransactionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,10 +37,12 @@ public class TransactionService {
      */
     public Map<String, String> processTransaction(Transaction transaction) {
         Long amount = transaction.getAmount();
-        String ip = transaction.getIp();
-        String cardNumber = transaction.getNumber();
+        // Check if ip address is valid
+        String ip = IPAddressValidator.isNonValidIp(transaction.getIp()) ? null : transaction.getIp();
+        // Check if card number is valid
+        String cardNumber = CardValidator.isNonValid(transaction.getNumber()) ? null : transaction.getNumber();
 
-        // Transferring negative amounts aren't allowed
+        // Transferring negative amounts isn't allowed
         if (amount == null || ip == null || cardNumber == null || amount <= 0 || ip.isEmpty() || cardNumber.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid transaction");
         }
