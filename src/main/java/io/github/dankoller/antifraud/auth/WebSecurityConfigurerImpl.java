@@ -9,6 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 @SuppressWarnings({"unused", "deprecation"})
@@ -31,7 +40,9 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
+        http
+                .cors(withDefaults())
+                .httpBasic()
                 .authenticationEntryPoint(restAuthenticationEntryPoint) // handles 401 auth error
                 .and()
                 .csrf().disable().headers().frameOptions().disable() // for Postman, H2 console
@@ -39,32 +50,53 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/h2-console/**").permitAll() // for H2 console
                 // Api endpoints
+                .mvcMatchers("/api/auth/login").permitAll()
                 .mvcMatchers("/api/auth/user", "/actuator/shutdown").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/antifraud/transaction").hasRole("MERCHANT")
                 .mvcMatchers("/api/auth/list").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/api/auth/**").hasRole("ADMINISTRATOR")
-                .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT")
-                // Web endpoints
-                .mvcMatchers("/web/about").permitAll()
-                .mvcMatchers("/web/contact").permitAll()
-                .mvcMatchers("/web/profile").authenticated()
-                .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
-                .mvcMatchers("/web/support/list-users").hasAnyRole("SUPPORT", "ADMINISTRATOR")
-                .mvcMatchers("/web/support/**").hasRole("SUPPORT")
-                // Anyone can create a new user
-                .mvcMatchers("/web/admin/new-user").hasAnyRole("SUPPORT", "MERCHANT", "ADMINISTRATOR")
-                .mvcMatchers("/web/admin/**").hasRole("ADMINISTRATOR")
+                .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT");
+//                // Web endpoints
+//                .mvcMatchers("/web/about").permitAll()
+//                .mvcMatchers("/web/contact").permitAll()
+//                .mvcMatchers("/web/profile").authenticated()
+//                .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
+//                .mvcMatchers("/web/support/list-users").hasAnyRole("SUPPORT", "ADMINISTRATOR")
+//                .mvcMatchers("/web/support/**").hasRole("SUPPORT")
+//                // Anyone can create a new user
+//                .mvcMatchers("/web/admin/new-user").hasAnyRole("SUPPORT", "MERCHANT", "ADMINISTRATOR")
+//                .mvcMatchers("/web/admin/**").hasRole("ADMINISTRATOR");
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
-                .and()
-                .formLogin() // Allow form login
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/web/"); // Redirect to homepage after logout
+//                .and()
+//                .formLogin() // Allow form login
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/"); // Redirect to homepage after logout
     }
 
     @Bean
     public static PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Allow CORS for all origins, headers, and methods for all endpoints (only for development)
+     *
+     * @return CorsConfigurationSource
+     */
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }
