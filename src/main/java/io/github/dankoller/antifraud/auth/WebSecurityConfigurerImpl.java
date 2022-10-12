@@ -56,23 +56,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/auth/list").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/api/auth/**").hasRole("ADMINISTRATOR")
                 .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT");
-//                // Web endpoints
-//                .mvcMatchers("/web/about").permitAll()
-//                .mvcMatchers("/web/contact").permitAll()
-//                .mvcMatchers("/web/profile").authenticated()
-//                .mvcMatchers("/web/merchant/**").hasRole("MERCHANT")
-//                .mvcMatchers("/web/support/list-users").hasAnyRole("SUPPORT", "ADMINISTRATOR")
-//                .mvcMatchers("/web/support/**").hasRole("SUPPORT")
-//                // Anyone can create a new user
-//                .mvcMatchers("/web/admin/new-user").hasAnyRole("SUPPORT", "MERCHANT", "ADMINISTRATOR")
-//                .mvcMatchers("/web/admin/**").hasRole("ADMINISTRATOR");
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
-//                .and()
-//                .formLogin() // Allow form login
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/"); // Redirect to homepage after logout
     }
 
     @Bean
