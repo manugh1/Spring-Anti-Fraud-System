@@ -47,6 +47,7 @@ and access the services.
 ### Processes
 
 - [Signup new user](#signup)
+- [Login](#login)
 - [Delete existing user](#delete-user)
 - [Get a user list](#get-user-list)
 - [Update a users role](#update-user-role)
@@ -114,6 +115,30 @@ Response:
     "role": "ADMINISTRATOR"
 }
 ```
+
+#### Login
+
+```
+POST /api/auth/login
+{
+   "username": "<String value, not empty>",
+   "password": "<String value, not empty>"
+}
+```
+
+Response:
+
+```
+{
+    "id": 1,
+    "name": "John Doe",
+    "username": "JohnDoe",
+    "role": "ADMINISTRATOR"
+}
+```
+
+_Note: This endpoint should be used to authenticate a user with http basic authentication. The response will be stored
+in the browser's local storage._
 
 #### Delete user
 
@@ -345,6 +370,16 @@ Response:
 _Note that these are just basic examples of the most common endpoints. The full list of endpoints is available in the
 table above._
 
+## Frontend
+
+The frontend is separated from the backend and can be found
+in [this repository](https://github.com/dan-koller/React-Anti-Fraud-Frontend). It is a React application that uses
+the [Semantic UI React](https://react.semantic-ui.com/) library for styling.
+
+There is also a legacy version of the frontend that uses Thymeleaf templates and server-side rendering. It can be found
+as a [separate package](https://github.com/dan-koller/Spring-Anti-Fraud-System/releases) in this repository. Instructions on how to run it are available in the README file of the package.
+However, it is not recommended to use it as it is not actively maintained.
+
 ## Architecture
 
 The system is built on a [Spring Framework](https://spring.io/) application context. The application itself follows the
@@ -379,15 +414,13 @@ model-view-controller pattern. The application consists of the following compone
 - [MySQL 8.0.30](https://www.mysql.com/)
 - [MySQL Connector 8.0.30](https://dev.mysql.com/downloads/connector/j/)
 - [Lombok 1.18.24](https://projectlombok.org/)
-- [Thymeleaf 3.0.12](https://www.thymeleaf.org/)
-- [Thymleeaf Extras Spring Security 3.0.4](https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5/3.0.4.RELEASE)
 - [Spring Boot Test 2.7.0](https://spring.io/projects/spring-boot-test)
 - [JUnit 5.8.1](https://junit.org/junit5/)
 
 ## Roadmap
 
-- ~~Add an admin panel~~
-- ~~Add web interface for users~~
-- ~~Update database schema to support H2 Version 2.x~~
-- Complete web interface for users coming soon. Stay tuned!
+- ~~Update database schema to support H2 Version 2.x~~ (Done)
+- ~~Complete web interface for users and administration~~ (Done)
 - Add unit tests
+- Add integration tests
+- Add Docker support
