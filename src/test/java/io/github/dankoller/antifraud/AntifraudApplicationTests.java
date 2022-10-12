@@ -3,7 +3,6 @@ package io.github.dankoller.antifraud;
 import io.github.dankoller.antifraud.controller.AuthorizationController;
 import io.github.dankoller.antifraud.controller.TransactionController;
 import io.github.dankoller.antifraud.controller.ValidationController;
-import io.github.dankoller.antifraud.controller.WebController;
 import io.github.dankoller.antifraud.entity.user.User;
 import io.github.dankoller.antifraud.persistence.UserRepository;
 import io.github.dankoller.antifraud.service.UserService;
@@ -38,16 +37,12 @@ class AntifraudApplicationTests {
     @Autowired
     private ValidationController validationController;
 
-    @Autowired
-    private WebController webController;
-
     // Test if the controllers are initialized
     @Test
     void contextLoads() {
         assertThat(authorizationController).isNotNull();
         assertThat(transactionController).isNotNull();
         assertThat(validationController).isNotNull();
-        assertThat(webController).isNotNull();
     }
 
     // Test if a user can be created
