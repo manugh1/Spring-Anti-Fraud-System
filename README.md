@@ -415,6 +415,7 @@ model-view-controller pattern. The application consists of the following compone
 - [MySQL Connector 8.0.30](https://dev.mysql.com/downloads/connector/j/)
 - [Lombok 1.18.24](https://projectlombok.org/)
 - [Spring Boot Test 2.7.0](https://spring.io/projects/spring-boot-test)
+- [Spring Security Test 5.6.0](https://spring.io/projects/spring-security-test)
 - [JUnit 5.8.1](https://junit.org/junit5/)
 
 ## Roadmap

@@ -42,6 +42,9 @@ dependencies {
 	// Spring boot test and JUnit 5
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.0'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+
+	// Spring security test
+	testImplementation 'org.springframework.security:spring-security-test:5.6.0'
 }
 
 tasks.named('test') {
