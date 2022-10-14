@@ -146,9 +146,41 @@ class AntifraudApplicationTests {
                 .andExpect(status().isOk());
     }
 
-    // Test if a user can be deleted and clean up the database
+    // Test if the support can get a list of all users
     @Test
     @Order(7)
+    @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
+    void testGetAllUsers() throws Exception {
+        mvc
+                .perform(get("/api/auth/list"))
+                .andExpect(status().isOk());
+    }
+
+    // Test if the admin can get a list of all users
+    @Test
+    @Order(8)
+    @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
+    void testGetAllUsersAdmin() throws Exception {
+        mvc
+                .perform(get("/api/auth/list"))
+                .andExpect(status().isOk());
+    }
+
+    // Test if the merchant can't get a list of all users
+    @Test
+    @Order(9)
+    @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
+    void testGetAllUsersMerchant() throws Exception {
+        mvc
+                .perform(get("/api/auth/list"))
+                .andExpect(status().isForbidden());
+    }
+
+    // TODO: Add more integration tests for the endpoints
+
+    // Test if a user can be deleted and clean up the database
+    @Test
+    @Order(10)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testUserDeletion() throws Exception {
         mvc
@@ -162,11 +194,9 @@ class AntifraudApplicationTests {
         System.out.println("Please remove the admin user manually from the database");
     }
 
-    // TODO: Add more integration tests for the endpoints
-
     // Test if the admin can be removed from the database (for cleanup)
     @Test
-    @Order(8)
+    @Order(11)
     void removeAdminUser() {
         userService.deleteUser(admin.getUsername());
         assertThat(userRepository.findByUsername(admin.getUsername())).isNull();
