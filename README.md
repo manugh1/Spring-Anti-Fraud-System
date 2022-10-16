@@ -377,7 +377,8 @@ in [this repository](https://github.com/dan-koller/React-Anti-Fraud-Frontend). I
 the [Semantic UI React](https://react.semantic-ui.com/) library for styling.
 
 There is also a legacy version of the frontend that uses Thymeleaf templates and server-side rendering. It can be found
-as a [separate package](https://github.com/dan-koller/Spring-Anti-Fraud-System/releases) in this repository. Instructions on how to run it are available in the README file of the package.
+as a [separate package](https://github.com/dan-koller/Spring-Anti-Fraud-System/releases) in this repository.
+Instructions on how to run it are available in the README file of the package.
 However, it is not recommended to use it as it is not actively maintained.
 
 ## Architecture
@@ -418,10 +419,19 @@ model-view-controller pattern. The application consists of the following compone
 - [Spring Security Test 5.6.0](https://spring.io/projects/spring-security-test)
 - [JUnit 5.8.1](https://junit.org/junit5/)
 
+## Testing
+
+The application is tested using JUnit 5 and Mockito. The integration tests are run using the Spring Boot Test framework
+and provide a full integration test of the application. The code coverage is 96% for classes, 87% for methods and 83%
+for lines.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ## Roadmap
 
 - ~~Update database schema to support H2 Version 2.x~~ (Done)
 - ~~Complete web interface for users and administration~~ (Done)
-- Add unit tests
-- Add integration tests
+- ~~Add integration tests~~ (Done)
 - Add Docker support
