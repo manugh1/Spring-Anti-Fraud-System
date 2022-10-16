@@ -78,9 +78,33 @@ class AntifraudApplicationTests {
         assertThat(userRepository.findByUsername(admin.getUsername())).isNotNull();
     }
 
-    // Test if a merchant user can be created
+    // Test if the (admin) user can log in
     @Test
     @Order(3)
+    void loginAdminUser() throws Exception {
+        mvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"" + admin.getUsername() + "\",\"password\":\"" + admin.getPassword() + "\"}"))
+                .andExpect(status().isOk())
+                // Response should contain name, username and role
+                .andExpect(content().string(containsString(admin.getName())))
+                .andExpect(content().string(containsString(admin.getUsername())))
+                .andExpect(content().string(containsString(admin.getRoleWithoutPrefix())));
+    }
+
+    // Test if a non-existing user can't log in
+    @Test
+    @Order(4)
+    void loginNonExistingUser() throws Exception {
+        mvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"nonexisting\",\"password\":\"password\"}"))
+                .andExpect(status().isNotFound());
+    }
+
+    // Test if a merchant user can be created
+    @Test
+    @Order(5)
     void testMerchantCreation() throws Exception {
         String userAsJson = "{\"name\":\"" + "Test Merchant" +
                 "\",\"username\":\"" + "testmerchant" +
@@ -108,7 +132,7 @@ class AntifraudApplicationTests {
 
     // Test if a support user can be created
     @Test
-    @Order(4)
+    @Order(6)
     void testSupportCreation() throws Exception {
         String userAsJson = "{\"name\":\"" + "Test Support" +
                 "\",\"username\":\"" + "testsupport" +
@@ -131,7 +155,7 @@ class AntifraudApplicationTests {
 
     // Test if users can be unlocked
     @Test
-    @Order(5)
+    @Order(7)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testUnlockUser() throws Exception {
         String unlockMerchantAsJson = "{\"username\":\"" + "testmerchant" +
@@ -163,7 +187,7 @@ class AntifraudApplicationTests {
 
     // Check if a role can be changed
     @Test
-    @Order(6)
+    @Order(8)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testChangeRole() throws Exception {
         String changeRoleAsJson = "{\"username\":\"" + "testsupport" +
@@ -188,7 +212,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can get a list of all users
     @Test
-    @Order(7)
+    @Order(9)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testGetAllUsers() throws Exception {
         mvc
@@ -202,7 +226,7 @@ class AntifraudApplicationTests {
 
     // Test if the admin can get a list of all users
     @Test
-    @Order(8)
+    @Order(10)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testGetAllUsersAdmin() throws Exception {
         mvc
@@ -215,7 +239,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't get a list of all users
     @Test
-    @Order(9)
+    @Order(11)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testGetAllUsersMerchant() throws Exception {
         mvc
@@ -225,7 +249,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can post a new transaction
     @Test
-    @Order(10)
+    @Order(12)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransaction() throws Exception {
         String transactionAsJson = "{" +
@@ -243,7 +267,7 @@ class AntifraudApplicationTests {
                 .andExpect(status().isOk())
                 // The response should contain the result and info fields
                 .andExpect(content().string(containsString("result")))
-                // Should be PROHIBITED
+                // Should be ALLOWED
                 .andExpect(content().string(containsString("PROHIBITED")))
                 .andExpect(content().string(containsString("info")))
                 // Should be 'amount'
@@ -252,7 +276,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new transaction with an invalid date
     @Test
-    @Order(11)
+    @Order(13)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidDate() throws Exception {
         String transactionAsJson = "{" +
@@ -272,7 +296,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new transaction with an invalid amount
     @Test
-    @Order(12)
+    @Order(14)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidAmount() throws Exception {
         String transactionAsJson = "{" +
@@ -292,7 +316,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new transaction with an invalid ip
     @Test
-    @Order(13)
+    @Order(15)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidIp() throws Exception {
         String transactionAsJson = "{" +
@@ -312,7 +336,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new transaction with an invalid number
     @Test
-    @Order(14)
+    @Order(16)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidNumber() throws Exception {
         String transactionAsJson = "{" +
@@ -332,7 +356,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new transaction with an invalid region
     @Test
-    @Order(15)
+    @Order(17)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidRegion() throws Exception {
         String transactionAsJson = "{" +
@@ -352,7 +376,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't post a new transaction
     @Test
-    @Order(16)
+    @Order(18)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostTransactionSupport() throws Exception {
         String transactionAsJson = "{" +
@@ -372,7 +396,7 @@ class AntifraudApplicationTests {
 
     // Test if the admin can't post a new transaction
     @Test
-    @Order(17)
+    @Order(19)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPostTransactionAdmin() throws Exception {
         String transactionAsJson = "{" +
@@ -392,7 +416,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can post a new suspicious ip
     @Test
-    @Order(18)
+    @Order(20)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostSuspiciousIpSupport() throws Exception {
         String suspiciousIpAsJson = "{" +
@@ -429,7 +453,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can get a list of suspicious ips
     @Test
-    @Order(19)
+    @Order(22)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testGetSuspiciousIpsSupport() throws Exception {
         mvc
@@ -444,7 +468,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can delete a suspicious ip
     @Test
-    @Order(20)
+    @Order(23)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteSuspiciousIpSupport() throws Exception {
         String badIp = "127.127.127.127";
@@ -460,7 +484,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't delete a suspicious ip with an invalid ip
     @Test
-    @Order(22)
+    @Order(24)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteSuspiciousIpInvalidIp() throws Exception {
         String emptyIp = "";
@@ -477,7 +501,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't delete a suspicious ip with an ip that doesn't exist
     @Test
-    @Order(23)
+    @Order(25)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteSuspiciousIpIpDoesntExist() throws Exception {
         String badIp = "10.11.12.13";
@@ -489,7 +513,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new suspicious ip
     @Test
-    @Order(24)
+    @Order(26)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostSuspiciousIpMerchant() throws Exception {
         String suspiciousIpAsJson = "{" +
@@ -505,7 +529,7 @@ class AntifraudApplicationTests {
 
     // Test if the admin can't post a new suspicious ip
     @Test
-    @Order(25)
+    @Order(27)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPostSuspiciousIpAdmin() throws Exception {
         String suspiciousIpAsJson = "{" +
@@ -521,7 +545,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can post a new stolen card number
     @Test
-    @Order(26)
+    @Order(28)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostStolenCardNumberSupport() throws Exception {
         String stolenCardNumberAsJson = "{" +
@@ -558,7 +582,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can get a list of stolen card numbers
     @Test
-    @Order(27)
+    @Order(30)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testGetStolenCardNumbersSupport() throws Exception {
         mvc
@@ -573,7 +597,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can delete a stolen card number
     @Test
-    @Order(28)
+    @Order(31)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteStolenCardNumberSupport() throws Exception {
         String badCardNumber = "3151853279026036";
@@ -589,7 +613,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't delete a stolen card number with an invalid card number
     @Test
-    @Order(30)
+    @Order(32)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteStolenCardNumberInvalidCardNumber() throws Exception {
         String emptyCardNumber = "";
@@ -606,7 +630,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't delete a stolen card number with a card number that doesn't exist
     @Test
-    @Order(31)
+    @Order(33)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteStolenCardNumberCardNumberDoesntExist() throws Exception {
         String badCardNumber = "1234567899876543";
@@ -618,7 +642,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't post a new stolen card number
     @Test
-    @Order(32)
+    @Order(34)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostStolenCardNumberMerchant() throws Exception {
         String stolenCardNumberAsJson = "{" +
@@ -634,7 +658,7 @@ class AntifraudApplicationTests {
 
     // Test if the admin can't post a new stolen card number
     @Test
-    @Order(33)
+    @Order(35)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPostStolenCardNumberAdmin() throws Exception {
         String stolenCardNumberAsJson = "{" +
@@ -650,7 +674,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can provide feedback on a transaction
     @Test
-    @Order(34)
+    @Order(36)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPutFeedbackSupport() throws Exception {
         // Set the latest transaction in the database as transaction id
@@ -683,7 +707,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't provide feedback on a transaction with an invalid transaction id
     @Test
-    @Order(35)
+    @Order(37)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPutFeedbackInvalidTransactionId() throws Exception {
         String transactionId = "0";
@@ -701,7 +725,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can't provide feedback on a transaction with an invalid feedback
     @Test
-    @Order(36)
+    @Order(38)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPutFeedbackInvalidFeedback() throws Exception {
         // Set the latest transaction in the database as transaction id
@@ -722,7 +746,7 @@ class AntifraudApplicationTests {
 
     // Test if the merchant can't provide feedback on a transaction
     @Test
-    @Order(37)
+    @Order(39)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPutFeedbackMerchant() throws Exception {
         // Set the latest transaction in the database as transaction id
@@ -743,7 +767,7 @@ class AntifraudApplicationTests {
 
     // Test if the admin can't provide feedback on a transaction
     @Test
-    @Order(38)
+    @Order(40)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPutFeedbackAdmin() throws Exception {
         // Set the latest transaction in the database as transaction id
@@ -764,7 +788,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can get all transactions
     @Test
-    @Order(39)
+    @Order(41)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testGetAllTransactionsSupport() throws Exception {
         mvc
@@ -784,7 +808,7 @@ class AntifraudApplicationTests {
 
     // Test if the support can get all transactions for a specific card number
     @Test
-    @Order(40)
+    @Order(42)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testGetAllTransactionsForCardNumberSupport() throws Exception {
         mvc
@@ -817,23 +841,32 @@ class AntifraudApplicationTests {
 
     // Test if a user can be deleted and clean up the database
     @Test
-    @Order(39)
+    @Order(43)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testUserDeletion() throws Exception {
         mvc
                 .perform(delete("/api/auth/user/testmerchant"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain username and status fields
+                .andExpect(content().string(containsString("username")))
+                // Username should be the same as the one we sent earlier
+                .andExpect(content().string(containsString("testmerchant")))
+                .andExpect(content().string(containsString("status")))
+                // Status should be "Deleted successfully!"
+                .andExpect(content().string(containsString("Deleted successfully!")));
 
         mvc
                 .perform(delete("/api/auth/user/testsupport"))
-                .andExpect(status().isOk());
-
-        System.out.println("Please remove the admin user manually from the database");
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("username")))
+                .andExpect(content().string(containsString("testsupport")))
+                .andExpect(content().string(containsString("status")))
+                .andExpect(content().string(containsString("Deleted successfully!")));
     }
 
     // Test if the latest transaction in the database is deleted (for cleanup)
     @Test
-    @Order(40)
+    @Order(44)
     void testTransactionDeletion() {
         // Set the latest transaction in the database as transaction id
         String transactionId = String.valueOf(transactionRepository
@@ -845,7 +878,7 @@ class AntifraudApplicationTests {
 
     // Test if the admin can be removed from the database (for cleanup)
     @Test
-    @Order(41)
+    @Order(45)
     void removeAdminUser() {
         userService.deleteUser(admin.getUsername());
         assertThat(userRepository.findByUsername(admin.getUsername())).isNull();
