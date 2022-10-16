@@ -47,7 +47,7 @@ and access the services.
 ### Processes
 
 - [Signup new user](#signup)
-- [Login](#login)
+- [Login as existing user](#login)
 - [Delete existing user](#delete-user)
 - [Get a user list](#get-user-list)
 - [Update a users role](#update-user-role)
@@ -421,7 +421,7 @@ model-view-controller pattern. The application consists of the following compone
 
 ## Testing
 
-The application is tested using JUnit 5 and Mockito. The integration tests are run using the Spring Boot Test framework
+The application is tested using JUnit 5. The integration tests are run using the Spring Boot Test framework
 and provide a full integration test of the application. The code coverage is 96% for classes, 87% for methods and 83%
 for lines.
 
