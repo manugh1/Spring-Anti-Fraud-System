@@ -20,7 +20,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -89,7 +91,19 @@ class AntifraudApplicationTests {
                 .perform(post("/api/auth/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userAsJson))
-                .andExpect(status().isCreated());
+                // Check the response status code
+                .andExpect(status().isCreated())
+                // Check that the response contains id, name, username, and role
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("name")))
+                // Name should be the same as the one we sent
+                .andExpect(content().string(containsString("Test Merchant")))
+                .andExpect(content().string(containsString("username")))
+                // Username should be the same as the one we sent
+                .andExpect(content().string(containsString("testmerchant")))
+                .andExpect(content().string(containsString("role")))
+                // Role should be MERCHANT by default
+                .andExpect(content().string(containsString("MERCHANT")));
     }
 
     // Test if a support user can be created
@@ -105,7 +119,14 @@ class AntifraudApplicationTests {
                 .perform(post("/api/auth/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userAsJson))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("name")))
+                .andExpect(content().string(containsString("Test Support")))
+                .andExpect(content().string(containsString("username")))
+                .andExpect(content().string(containsString("testsupport")))
+                .andExpect(content().string(containsString("role")))
+                .andExpect(content().string(containsString("MERCHANT"))); // MERCHANT by default
     }
 
     // Test if users can be unlocked
@@ -125,13 +146,19 @@ class AntifraudApplicationTests {
                 .perform(put("/api/auth/access")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(unlockMerchantAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain status field
+                .andExpect(content().string(containsString("status")))
+                // Status should be 'User <username> unlocked!'
+                .andExpect(content().string(containsString("User testmerchant unlocked!")));
 
         mvc
                 .perform(put("/api/auth/access")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(unlockSupportAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("status")))
+                .andExpect(content().string(containsString("User testsupport unlocked!")));
     }
 
     // Check if a role can be changed
@@ -147,7 +174,16 @@ class AntifraudApplicationTests {
                 .perform(put("/api/auth/role")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(changeRoleAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain id, name, username, and role
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("name")))
+                .andExpect(content().string(containsString("Test Support")))
+                .andExpect(content().string(containsString("username")))
+                .andExpect(content().string(containsString("testsupport")))
+                .andExpect(content().string(containsString("role")))
+                // Role should be SUPPORT
+                .andExpect(content().string(containsString("SUPPORT")));
     }
 
     // Test if the support can get a list of all users
@@ -157,7 +193,11 @@ class AntifraudApplicationTests {
     void testGetAllUsers() throws Exception {
         mvc
                 .perform(get("/api/auth/list"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // The response should contain a list of users with the testadmin, testmerchant, and testsupport users
+                .andExpect(content().string(containsString("testadmin")))
+                .andExpect(content().string(containsString("testmerchant")))
+                .andExpect(content().string(containsString("testsupport")));
     }
 
     // Test if the admin can get a list of all users
@@ -167,7 +207,10 @@ class AntifraudApplicationTests {
     void testGetAllUsersAdmin() throws Exception {
         mvc
                 .perform(get("/api/auth/list"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("testadmin")))
+                .andExpect(content().string(containsString("testmerchant")))
+                .andExpect(content().string(containsString("testsupport")));
     }
 
     // Test if the merchant can't get a list of all users
@@ -197,7 +240,14 @@ class AntifraudApplicationTests {
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(transactionAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // The response should contain the result and info fields
+                .andExpect(content().string(containsString("result")))
+                // Should be PROHIBITED
+                .andExpect(content().string(containsString("PROHIBITED")))
+                .andExpect(content().string(containsString("info")))
+                // Should be 'amount'
+                .andExpect(content().string(containsString("amount")));
     }
 
     // Test if the merchant can't post a new transaction with an invalid date
@@ -353,7 +403,12 @@ class AntifraudApplicationTests {
                 .perform(post("/api/antifraud/suspicious-ip")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(suspiciousIpAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain an id and the ip field
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("ip")))
+                // Response should contain the ip we sent
+                .andExpect(content().string(containsString("127.127.127.127")));
     }
 
     // Test if the support can't post a new suspicious ip with an invalid ip
@@ -379,7 +434,12 @@ class AntifraudApplicationTests {
     void testGetSuspiciousIpsSupport() throws Exception {
         mvc
                 .perform(get("/api/antifraud/suspicious-ip"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain an id and the ip field
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("ip")))
+                // Response should contain the ip we sent earlier
+                .andExpect(content().string(containsString("127.127.127.127")));
     }
 
     // Test if the support can delete a suspicious ip
@@ -391,7 +451,11 @@ class AntifraudApplicationTests {
 
         mvc
                 .perform(delete("/api/antifraud/suspicious-ip/" + badIp))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain a status field
+                .andExpect(content().string(containsString("status")))
+                // Response should contain the status "IP <ip> successfully removed!"
+                .andExpect(content().string(containsString("IP " + badIp + " successfully removed!")));
     }
 
     // Test if the support can't delete a suspicious ip with an invalid ip
@@ -468,7 +532,12 @@ class AntifraudApplicationTests {
                 .perform(post("/api/antifraud/stolencard")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(stolenCardNumberAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain an id and the number field
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("number")))
+                // Response should contain the number we sent
+                .andExpect(content().string(containsString("3151853279026036")));
     }
 
     // Test if the support can't post a new stolen card number with an invalid card number
@@ -494,7 +563,12 @@ class AntifraudApplicationTests {
     void testGetStolenCardNumbersSupport() throws Exception {
         mvc
                 .perform(get("/api/antifraud/stolencard"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain an id and the number field
+                .andExpect(content().string(containsString("id")))
+                .andExpect(content().string(containsString("number")))
+                // Response should contain the number we sent earlier
+                .andExpect(content().string(containsString("3151853279026036")));
     }
 
     // Test if the support can delete a stolen card number
@@ -506,7 +580,11 @@ class AntifraudApplicationTests {
 
         mvc
                 .perform(delete("/api/antifraud/stolencard/" + badCardNumber))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain a status field
+                .andExpect(content().string(containsString("status")))
+                // Response should contain the status "Card <number> successfully removed!"
+                .andExpect(content().string(containsString("Card " + badCardNumber + " successfully removed!")));
     }
 
     // Test if the support can't delete a stolen card number with an invalid card number
@@ -588,7 +666,19 @@ class AntifraudApplicationTests {
                 .perform(put("/api/antifraud/transaction/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(feedbackAsJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // Response should contain the
+                // transactionId, amount, ip, number, region, date, result and feedback fields
+                .andExpect(content().string(containsString("transactionId")))
+                .andExpect(content().string(containsString("amount")))
+                .andExpect(content().string(containsString("ip")))
+                .andExpect(content().string(containsString("number")))
+                .andExpect(content().string(containsString("region")))
+                .andExpect(content().string(containsString("date")))
+                .andExpect(content().string(containsString("result")))
+                .andExpect(content().string(containsString("feedback")))
+                // Response should contain the feedback we sent earlier
+                .andExpect(content().string(containsString("ALLOWED")));
     }
 
     // Test if the support can't provide feedback on a transaction with an invalid transaction id
@@ -672,7 +762,58 @@ class AntifraudApplicationTests {
                 .andExpect(status().isForbidden());
     }
 
-    // TODO: Add tests for the response bodies of the endpoints
+    // Test if the support can get all transactions
+    @Test
+    @Order(39)
+    @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
+    void testGetAllTransactionsSupport() throws Exception {
+        mvc
+                .perform(get("/api/antifraud/history/"))
+                .andExpect(status().isOk())
+                // Response should contain the
+                // transactionId, amount, ip, number, region, date, result and feedback fields
+                .andExpect(content().string(containsString("transactionId")))
+                .andExpect(content().string(containsString("amount")))
+                .andExpect(content().string(containsString("ip")))
+                .andExpect(content().string(containsString("number")))
+                .andExpect(content().string(containsString("region")))
+                .andExpect(content().string(containsString("date")))
+                .andExpect(content().string(containsString("result")))
+                .andExpect(content().string(containsString("feedback")));
+    }
+
+    // Test if the support can get all transactions for a specific card number
+    @Test
+    @Order(40)
+    @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
+    void testGetAllTransactionsForCardNumberSupport() throws Exception {
+        mvc
+                .perform(get("/api/antifraud/history/4000008449433403"))
+                .andExpect(status().isOk())
+                // Response should contain the transactionId, amount, ip, number, region, date, result and feedback fields
+                .andExpect(content().string(containsString("transactionId")))
+                .andExpect(content().string(containsString("amount")))
+                // Should contain the card number we sent earlier in test #15
+                .andExpect(content().string(containsString("800")))
+                .andExpect(content().string(containsString("ip")))
+                // Should contain the ip we sent earlier in test #15
+                .andExpect(content().string(containsString("127.0.0.1")))
+                .andExpect(content().string(containsString("number")))
+                // Should contain the card number we sent earlier in test #15
+                .andExpect(content().string(containsString("4000008449433403")))
+                .andExpect(content().string(containsString("region")))
+                // Should contain the region we sent earlier in test #15
+                .andExpect(content().string(containsString("ECA")))
+                .andExpect(content().string(containsString("date")))
+                // Should contain the date we sent earlier in test #15
+                .andExpect(content().string(containsString("2022-10-13T14:34:41")))
+                .andExpect(content().string(containsString("result")))
+                // Should contain the result we sent earlier in test #34
+                .andExpect(content().string(containsString("ALLOWED")))
+                .andExpect(content().string(containsString("feedback")))
+                // Should contain the feedback we sent earlier in test #35
+                .andExpect(content().string(containsString("amount")));
+    }
 
     // Test if a user can be deleted and clean up the database
     @Test
