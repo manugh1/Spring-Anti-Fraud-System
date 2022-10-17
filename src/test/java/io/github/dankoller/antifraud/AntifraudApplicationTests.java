@@ -31,11 +31,49 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SuppressWarnings("unused")
 class AntifraudApplicationTests {
 
-    private final User admin = new User("Test Admin",
+    // Users
+    private final User testAdministrator = new User("Test Administrator",
             "testadmin",
             "password",
             "ROLE_ADMINISTRATOR",
             true);
+    private final String testMerchantUsername = "testmerchant";
+    private final String testSupportName = "Test Support";
+    private final String testSupportUsername = "testsupport";
+    private final String testPassword = "password";
+
+    // Card numbers
+    private final String cardNumberValid = "4000008449433403";
+    private final String cardNumberInvalid = "1234567891011121";
+    private final String stolenCardNumberValid = "3151853279026036";
+    private final String stolenCardNumberValidAsJson = "{" + "\"number\":\"" + stolenCardNumberValid + "\"}";
+
+    // IP addresses
+    private final String ipAddressValid = "127.0.0.1";
+    private final String badIpValid = "127.127.127.127";
+    private final String suspiciousIpValidAsJson = "{" + "\"ip\":\"" + badIpValid + "\"}";
+
+    // Regions
+    private final String regionValid = "ECA";
+
+    // Dates
+    private final String dateValid = "2022-10-13T14:34:41";
+
+    // Transactions
+    private final String amountValid = "800";
+    private final String transactionValidAsJson = "{" +
+            "\"amount\":\"" + amountValid +
+            "\",\"ip\":\"" + ipAddressValid +
+            "\",\"number\":\"" + cardNumberValid +
+            "\",\"region\":\"" + regionValid +
+            "\",\"date\":\"" + dateValid +
+            "\"}";
+
+    // Feedback
+    private final String feedbackAsJsonInvalid = "{" +
+            "\"transactionId\":\"" + "0" +
+            "\",\"feedback\":\"" + "ALLOWED" +
+            "\"}";
 
     @Autowired
     private MockMvc mvc;
@@ -72,10 +110,10 @@ class AntifraudApplicationTests {
     @Order(2)
     void saveAdminUser() {
         // Encode the password
-        admin.setPassword(new BCryptPasswordEncoder().encode(admin.getPassword()));
+        testAdministrator.setPassword(new BCryptPasswordEncoder().encode(testAdministrator.getPassword()));
 
-        userRepository.save(admin);
-        assertThat(userRepository.findByUsername(admin.getUsername())).isNotNull();
+        userRepository.save(testAdministrator);
+        assertThat(userRepository.findByUsername(testAdministrator.getUsername())).isNotNull();
     }
 
     // Test if the (admin) user can log in
@@ -83,13 +121,14 @@ class AntifraudApplicationTests {
     @Order(3)
     void loginAdminUser() throws Exception {
         mvc.perform(post("/api/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"" + admin.getUsername() + "\",\"password\":\"" + admin.getPassword() + "\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"" + testAdministrator.getUsername() +
+                                "\",\"password\":\"" + testAdministrator.getPassword() + "\"}"))
                 .andExpect(status().isOk())
                 // Response should contain name, username and role
-                .andExpect(content().string(containsString(admin.getName())))
-                .andExpect(content().string(containsString(admin.getUsername())))
-                .andExpect(content().string(containsString(admin.getRoleWithoutPrefix())));
+                .andExpect(content().string(containsString(testAdministrator.getName())))
+                .andExpect(content().string(containsString(testAdministrator.getUsername())))
+                .andExpect(content().string(containsString(testAdministrator.getRoleWithoutPrefix())));
     }
 
     // Test if a non-existing user can't log in
@@ -97,8 +136,8 @@ class AntifraudApplicationTests {
     @Order(4)
     void loginNonExistingUser() throws Exception {
         mvc.perform(post("/api/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"nonexisting\",\"password\":\"password\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"nonexisting\",\"password\":\"password\"}"))
                 .andExpect(status().isNotFound());
     }
 
@@ -106,25 +145,26 @@ class AntifraudApplicationTests {
     @Test
     @Order(5)
     void testMerchantCreation() throws Exception {
-        String userAsJson = "{\"name\":\"" + "Test Merchant" +
-                "\",\"username\":\"" + "testmerchant" +
-                "\",\"password\":\"" + "password" +
+        String testMerchantName = "Test Merchant";
+        String testMerchantAsJson = "{" +
+                "\"name\":\"" + testMerchantName +
+                "\",\"username\":\"" + testMerchantUsername +
+                "\",\"password\":\"" + testPassword +
                 "\"}";
-
         mvc
                 .perform(post("/api/auth/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(userAsJson))
+                        .content(testMerchantAsJson))
                 // Check the response status code
                 .andExpect(status().isCreated())
                 // Check that the response contains id, name, username, and role
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("name")))
                 // Name should be the same as the one we sent
-                .andExpect(content().string(containsString("Test Merchant")))
+                .andExpect(content().string(containsString(testMerchantName)))
                 .andExpect(content().string(containsString("username")))
                 // Username should be the same as the one we sent
-                .andExpect(content().string(containsString("testmerchant")))
+                .andExpect(content().string(containsString(testMerchantUsername)))
                 .andExpect(content().string(containsString("role")))
                 // Role should be MERCHANT by default
                 .andExpect(content().string(containsString("MERCHANT")));
@@ -134,21 +174,21 @@ class AntifraudApplicationTests {
     @Test
     @Order(6)
     void testSupportCreation() throws Exception {
-        String userAsJson = "{\"name\":\"" + "Test Support" +
-                "\",\"username\":\"" + "testsupport" +
-                "\",\"password\":\"" + "password" +
+        String testSupportAsJson = "{" +
+                "\"name\":\"" + testSupportName +
+                "\",\"username\":\"" + testSupportUsername +
+                "\",\"password\":\"" + testPassword +
                 "\"}";
-
         mvc
                 .perform(post("/api/auth/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(userAsJson))
+                        .content(testSupportAsJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("name")))
-                .andExpect(content().string(containsString("Test Support")))
+                .andExpect(content().string(containsString(testSupportName)))
                 .andExpect(content().string(containsString("username")))
-                .andExpect(content().string(containsString("testsupport")))
+                .andExpect(content().string(containsString(testSupportUsername)))
                 .andExpect(content().string(containsString("role")))
                 .andExpect(content().string(containsString("MERCHANT"))); // MERCHANT by default
     }
@@ -158,11 +198,11 @@ class AntifraudApplicationTests {
     @Order(7)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testUnlockUser() throws Exception {
-        String unlockMerchantAsJson = "{\"username\":\"" + "testmerchant" +
+        String unlockMerchantAsJson = "{\"username\":\"" + testMerchantUsername +
                 "\",\"operation\":\"" + "UNLOCK" +
                 "\"}";
 
-        String unlockSupportAsJson = "{\"username\":\"" + "testsupport" +
+        String unlockSupportAsJson = "{\"username\":\"" + testSupportUsername +
                 "\",\"operation\":\"" + "UNLOCK" +
                 "\"}";
 
@@ -190,7 +230,7 @@ class AntifraudApplicationTests {
     @Order(8)
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testChangeRole() throws Exception {
-        String changeRoleAsJson = "{\"username\":\"" + "testsupport" +
+        String changeRoleAsJson = "{\"username\":\"" + testSupportUsername +
                 "\",\"role\":\"" + "SUPPORT" +
                 "\"}";
 
@@ -202,9 +242,9 @@ class AntifraudApplicationTests {
                 // Response should contain id, name, username, and role
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("name")))
-                .andExpect(content().string(containsString("Test Support")))
+                .andExpect(content().string(containsString(testSupportName)))
                 .andExpect(content().string(containsString("username")))
-                .andExpect(content().string(containsString("testsupport")))
+                .andExpect(content().string(containsString(testSupportUsername)))
                 .andExpect(content().string(containsString("role")))
                 // Role should be SUPPORT
                 .andExpect(content().string(containsString("SUPPORT")));
@@ -218,10 +258,10 @@ class AntifraudApplicationTests {
         mvc
                 .perform(get("/api/auth/list"))
                 .andExpect(status().isOk())
-                // The response should contain a list of users with the testadmin, testmerchant, and testsupport users
-                .andExpect(content().string(containsString("testadmin")))
-                .andExpect(content().string(containsString("testmerchant")))
-                .andExpect(content().string(containsString("testsupport")));
+                // The response should contain the testadmin, testmerchant, and testsupport users as list
+                .andExpect(content().string(containsString("testadmin"))) // Admin is created differently
+                .andExpect(content().string(containsString(testMerchantUsername)))
+                .andExpect(content().string(containsString(testSupportUsername)));
     }
 
     // Test if the admin can get a list of all users
@@ -233,8 +273,8 @@ class AntifraudApplicationTests {
                 .perform(get("/api/auth/list"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("testadmin")))
-                .andExpect(content().string(containsString("testmerchant")))
-                .andExpect(content().string(containsString("testsupport")));
+                .andExpect(content().string(containsString(testMerchantUsername)))
+                .andExpect(content().string(containsString(testSupportUsername)));
     }
 
     // Test if the merchant can't get a list of all users
@@ -252,18 +292,10 @@ class AntifraudApplicationTests {
     @Order(12)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransaction() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "800" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "4000008449433403" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13T14:34:41" +
-                "\"}";
-
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionValidAsJson))
                 .andExpect(status().isOk())
                 // The response should contain the result and info fields
                 .andExpect(content().string(containsString("result")))
@@ -279,18 +311,12 @@ class AntifraudApplicationTests {
     @Order(13)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidDate() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "100" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "4000008449433403" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13" +
-                "\"}";
+        String transactionBadDateAsJson = transactionValidAsJson.replace(dateValid, "2022-10-13");
 
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionBadDateAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -299,18 +325,12 @@ class AntifraudApplicationTests {
     @Order(14)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidAmount() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "4000008449433403" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13" +
-                "\"}";
+        String transactionBadAmountAsJson = transactionValidAsJson.replace(amountValid, "");
 
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionBadAmountAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -319,18 +339,12 @@ class AntifraudApplicationTests {
     @Order(15)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidIp() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "100" +
-                "\",\"ip\":\"" + "" +
-                "\",\"number\":\"" + "4000008449433403" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13" +
-                "\"}";
+        String transactionBadIpAsJson = transactionValidAsJson.replace(ipAddressValid, "");
 
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionBadIpAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -339,18 +353,12 @@ class AntifraudApplicationTests {
     @Order(16)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidNumber() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "100" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "1234567891011121" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13" +
-                "\"}";
+        String transactionBadNumberAsJson = transactionValidAsJson.replace(cardNumberValid, cardNumberInvalid);
 
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionBadNumberAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -359,18 +367,13 @@ class AntifraudApplicationTests {
     @Order(17)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidRegion() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "100" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "4000008449433403" +
-                "\",\"region\":\"" + "ABC" +
-                "\",\"date\":\"" + "2022-10-13" +
-                "\"}";
+        String regionInvalid = "ABC";
+        String transactionbadRegionAsJson = transactionValidAsJson.replace(regionValid, regionInvalid);
 
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionbadRegionAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -379,18 +382,10 @@ class AntifraudApplicationTests {
     @Order(18)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostTransactionSupport() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "100" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "4000008449433403" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13T14:34:41" +
-                "\"}";
-
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -399,18 +394,10 @@ class AntifraudApplicationTests {
     @Order(19)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPostTransactionAdmin() throws Exception {
-        String transactionAsJson = "{" +
-                "\"amount\":\"" + "100" +
-                "\",\"ip\":\"" + "127.0.0.1" +
-                "\",\"number\":\"" + "1298979375130220" +
-                "\",\"region\":\"" + "ECA" +
-                "\",\"date\":\"" + "2022-10-13T14:34:41" +
-                "\"}";
-
         mvc
                 .perform(post("/api/antifraud/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(transactionAsJson))
+                        .content(transactionValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -419,20 +406,16 @@ class AntifraudApplicationTests {
     @Order(20)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostSuspiciousIpSupport() throws Exception {
-        String suspiciousIpAsJson = "{" +
-                "\"ip\":\"" + "127.127.127.127"
-                + "\"}";
-
         mvc
                 .perform(post("/api/antifraud/suspicious-ip")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(suspiciousIpAsJson))
+                        .content(suspiciousIpValidAsJson))
                 .andExpect(status().isOk())
                 // Response should contain an id and the ip field
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("ip")))
                 // Response should contain the ip we sent
-                .andExpect(content().string(containsString("127.127.127.127")));
+                .andExpect(content().string(containsString(badIpValid)));
     }
 
     // Test if the support can't post a new suspicious ip with an invalid ip
@@ -440,14 +423,12 @@ class AntifraudApplicationTests {
     @Order(21)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostSuspiciousIpInvalidIp() throws Exception {
-        String suspiciousIpAsJson = "{" +
-                "\"ip\":\"" + ""
-                + "\"}";
+        String suspiciousIpBadIpAsJson = suspiciousIpValidAsJson.replace(badIpValid, "");
 
         mvc
                 .perform(post("/api/antifraud/suspicious-ip")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(suspiciousIpAsJson))
+                        .content(suspiciousIpBadIpAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -463,7 +444,7 @@ class AntifraudApplicationTests {
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("ip")))
                 // Response should contain the ip we sent earlier
-                .andExpect(content().string(containsString("127.127.127.127")));
+                .andExpect(content().string(containsString(badIpValid)));
     }
 
     // Test if the support can delete a suspicious ip
@@ -471,15 +452,13 @@ class AntifraudApplicationTests {
     @Order(23)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteSuspiciousIpSupport() throws Exception {
-        String badIp = "127.127.127.127";
-
         mvc
-                .perform(delete("/api/antifraud/suspicious-ip/" + badIp))
+                .perform(delete("/api/antifraud/suspicious-ip/" + badIpValid))
                 .andExpect(status().isOk())
                 // Response should contain a status field
                 .andExpect(content().string(containsString("status")))
                 // Response should contain the status "IP <ip> successfully removed!"
-                .andExpect(content().string(containsString("IP " + badIp + " successfully removed!")));
+                .andExpect(content().string(containsString("IP " + badIpValid + " successfully removed!")));
     }
 
     // Test if the support can't delete a suspicious ip with an invalid ip
@@ -504,10 +483,10 @@ class AntifraudApplicationTests {
     @Order(25)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteSuspiciousIpIpDoesntExist() throws Exception {
-        String badIp = "10.11.12.13";
+        String badIpNonExisting = "10.11.12.13";
 
         mvc
-                .perform(delete("/api/antifraud/suspicious-ip/" + badIp))
+                .perform(delete("/api/antifraud/suspicious-ip/" + badIpNonExisting))
                 .andExpect(status().isNotFound());
     }
 
@@ -516,14 +495,10 @@ class AntifraudApplicationTests {
     @Order(26)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostSuspiciousIpMerchant() throws Exception {
-        String suspiciousIpAsJson = "{" +
-                "\"ip\":\"" + "127.127.127.127"
-                + "\"}";
-
         mvc
                 .perform(post("/api/antifraud/suspicious-ip")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(suspiciousIpAsJson))
+                        .content(suspiciousIpValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -532,14 +507,10 @@ class AntifraudApplicationTests {
     @Order(27)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPostSuspiciousIpAdmin() throws Exception {
-        String suspiciousIpAsJson = "{" +
-                "\"ip\":\"" + "127.127.127.127"
-                + "\"}";
-
         mvc
                 .perform(post("/api/antifraud/suspicious-ip")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(suspiciousIpAsJson))
+                        .content(suspiciousIpValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -548,20 +519,16 @@ class AntifraudApplicationTests {
     @Order(28)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostStolenCardNumberSupport() throws Exception {
-        String stolenCardNumberAsJson = "{" +
-                "\"number\":\"" + "3151853279026036"
-                + "\"}";
-
         mvc
                 .perform(post("/api/antifraud/stolencard")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(stolenCardNumberAsJson))
+                        .content(stolenCardNumberValidAsJson))
                 .andExpect(status().isOk())
                 // Response should contain an id and the number field
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("number")))
                 // Response should contain the number we sent
-                .andExpect(content().string(containsString("3151853279026036")));
+                .andExpect(content().string(containsString(stolenCardNumberValid)));
     }
 
     // Test if the support can't post a new stolen card number with an invalid card number
@@ -569,14 +536,14 @@ class AntifraudApplicationTests {
     @Order(29)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostStolenCardNumberInvalidCardNumber() throws Exception {
-        String stolenCardNumberAsJson = "{" +
+        String stolenCardNumberBadNumberAsJson = "{" +
                 "\"number\":\"" + "1234567891234567"
                 + "\"}";
 
         mvc
                 .perform(post("/api/antifraud/stolencard")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(stolenCardNumberAsJson))
+                        .content(stolenCardNumberBadNumberAsJson))
                 .andExpect(status().isBadRequest());
     }
 
@@ -592,7 +559,7 @@ class AntifraudApplicationTests {
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("number")))
                 // Response should contain the number we sent earlier
-                .andExpect(content().string(containsString("3151853279026036")));
+                .andExpect(content().string(containsString(stolenCardNumberValid)));
     }
 
     // Test if the support can delete a stolen card number
@@ -600,15 +567,14 @@ class AntifraudApplicationTests {
     @Order(31)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteStolenCardNumberSupport() throws Exception {
-        String badCardNumber = "3151853279026036";
-
         mvc
-                .perform(delete("/api/antifraud/stolencard/" + badCardNumber))
+                .perform(delete("/api/antifraud/stolencard/" + stolenCardNumberValid))
                 .andExpect(status().isOk())
                 // Response should contain a status field
                 .andExpect(content().string(containsString("status")))
                 // Response should contain the status "Card <number> successfully removed!"
-                .andExpect(content().string(containsString("Card " + badCardNumber + " successfully removed!")));
+                .andExpect(content().string(containsString("Card " + stolenCardNumberValid +
+                        " successfully removed!")));
     }
 
     // Test if the support can't delete a stolen card number with an invalid card number
@@ -616,15 +582,12 @@ class AntifraudApplicationTests {
     @Order(32)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteStolenCardNumberInvalidCardNumber() throws Exception {
-        String emptyCardNumber = "";
-        String badCardNumber = "1234567891234567";
-
         mvc
-                .perform(delete("/api/antifraud/stolencard/" + emptyCardNumber))
+                .perform(delete("/api/antifraud/stolencard/" + ""))
                 .andExpect(status().isMethodNotAllowed());
 
         mvc
-                .perform(delete("/api/antifraud/stolencard/" + badCardNumber))
+                .perform(delete("/api/antifraud/stolencard/" + cardNumberInvalid))
                 .andExpect(status().isBadRequest());
     }
 
@@ -633,10 +596,10 @@ class AntifraudApplicationTests {
     @Order(33)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteStolenCardNumberCardNumberDoesntExist() throws Exception {
-        String badCardNumber = "1234567899876543";
+        String badCardNumberNonExisting = "1234567899876543";
 
         mvc
-                .perform(delete("/api/antifraud/stolencard/" + badCardNumber))
+                .perform(delete("/api/antifraud/stolencard/" + badCardNumberNonExisting))
                 .andExpect(status().isBadRequest());
     }
 
@@ -645,14 +608,10 @@ class AntifraudApplicationTests {
     @Order(34)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostStolenCardNumberMerchant() throws Exception {
-        String stolenCardNumberAsJson = "{" +
-                "\"number\":\"" + "3151853279026036"
-                + "\"}";
-
         mvc
                 .perform(post("/api/antifraud/stolencard")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(stolenCardNumberAsJson))
+                        .content(stolenCardNumberValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -661,14 +620,10 @@ class AntifraudApplicationTests {
     @Order(35)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPostStolenCardNumberAdmin() throws Exception {
-        String stolenCardNumberAsJson = "{" +
-                "\"number\":\"" + "3151853279026036"
-                + "\"}";
-
         mvc
                 .perform(post("/api/antifraud/stolencard")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(stolenCardNumberAsJson))
+                        .content(stolenCardNumberValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -677,19 +632,12 @@ class AntifraudApplicationTests {
     @Order(36)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPutFeedbackSupport() throws Exception {
-        // Set the latest transaction in the database as transaction id
-        String transactionId = String.valueOf(transactionRepository
-                .findAll().get(transactionRepository.findAll().size() - 1).getId());
-
-        String feedbackAsJson = "{" +
-                "\"transactionId\":\"" + transactionId +
-                "\",\"feedback\":\"" + "ALLOWED" +
-                "\"}";
+        String feedbackValidAsJson = feedbackAsJsonInvalid.replace("0", String.valueOf(getLastTransactionId()));
 
         mvc
                 .perform(put("/api/antifraud/transaction/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(feedbackAsJson))
+                        .content(feedbackValidAsJson))
                 .andExpect(status().isOk())
                 // Response should contain the
                 // transactionId, amount, ip, number, region, date, result and feedback fields
@@ -710,16 +658,10 @@ class AntifraudApplicationTests {
     @Order(37)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPutFeedbackInvalidTransactionId() throws Exception {
-        String transactionId = "0";
-        String feedbackAsJson = "{" +
-                "\"transactionId\":\"" + transactionId +
-                "\",\"feedback\":\"" + "PROHIBITED" +
-                "\"}";
-
         mvc
                 .perform(put("/api/antifraud/transaction/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(feedbackAsJson))
+                        .content(feedbackAsJsonInvalid))
                 .andExpect(status().isNotFound());
     }
 
@@ -728,19 +670,14 @@ class AntifraudApplicationTests {
     @Order(38)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPutFeedbackInvalidFeedback() throws Exception {
-        // Set the latest transaction in the database as transaction id
-        String transactionId = String.valueOf(transactionRepository
-                .findAll().get(transactionRepository.findAll().size() - 1).getId());
-
-        String feedbackAsJson = "{" +
-                "\"transactionId\":\"" + transactionId +
-                "\",\"feedback\":\"" + "INVALID" +
-                "\"}";
+        String feedbackAsJsonBadFeedback = feedbackAsJsonInvalid
+                .replace("0", String.valueOf(getLastTransactionId()))
+                .replace("ALLOWED", "INVALID");
 
         mvc
                 .perform(put("/api/antifraud/transaction/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(feedbackAsJson))
+                        .content(feedbackAsJsonBadFeedback))
                 .andExpect(status().isBadRequest());
     }
 
@@ -749,19 +686,12 @@ class AntifraudApplicationTests {
     @Order(39)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPutFeedbackMerchant() throws Exception {
-        // Set the latest transaction in the database as transaction id
-        String transactionId = String.valueOf(transactionRepository
-                .findAll().get(transactionRepository.findAll().size() - 1).getId());
-
-        String feedbackAsJson = "{" +
-                "\"transactionId\":\"" + transactionId +
-                "\",\"feedback\":\"" + "ALLOWED" +
-                "\"}";
+        String feedbackValidAsJson = feedbackAsJsonInvalid.replace("0", String.valueOf(getLastTransactionId()));
 
         mvc
                 .perform(put("/api/antifraud/transaction/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(feedbackAsJson))
+                        .content(feedbackValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -770,19 +700,12 @@ class AntifraudApplicationTests {
     @Order(40)
     @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     void testPutFeedbackAdmin() throws Exception {
-        // Set the latest transaction in the database as transaction id
-        String transactionId = String.valueOf(transactionRepository
-                .findAll().get(transactionRepository.findAll().size() - 1).getId());
-
-        String feedbackAsJson = "{" +
-                "\"transactionId\":\"" + transactionId +
-                "\",\"feedback\":\"" + "ALLOWED" +
-                "\"}";
+        String feedbackValidAsJson = feedbackAsJsonInvalid.replace("0", String.valueOf(getLastTransactionId()));
 
         mvc
                 .perform(put("/api/antifraud/transaction/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(feedbackAsJson))
+                        .content(feedbackValidAsJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -812,25 +735,25 @@ class AntifraudApplicationTests {
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testGetAllTransactionsForCardNumberSupport() throws Exception {
         mvc
-                .perform(get("/api/antifraud/history/4000008449433403"))
+                .perform(get("/api/antifraud/history/" + cardNumberValid))
                 .andExpect(status().isOk())
-                // Response should contain the transactionId, amount, ip, number, region, date, result and feedback fields
+                // Response should contain transactionId, amount, ip, number, region, date, result and feedback fields
                 .andExpect(content().string(containsString("transactionId")))
                 .andExpect(content().string(containsString("amount")))
                 // Should contain the card number we sent earlier in test #15
-                .andExpect(content().string(containsString("800")))
+                .andExpect(content().string(containsString(amountValid)))
                 .andExpect(content().string(containsString("ip")))
                 // Should contain the ip we sent earlier in test #15
-                .andExpect(content().string(containsString("127.0.0.1")))
+                .andExpect(content().string(containsString(ipAddressValid)))
                 .andExpect(content().string(containsString("number")))
                 // Should contain the card number we sent earlier in test #15
-                .andExpect(content().string(containsString("4000008449433403")))
+                .andExpect(content().string(containsString(cardNumberValid)))
                 .andExpect(content().string(containsString("region")))
                 // Should contain the region we sent earlier in test #15
-                .andExpect(content().string(containsString("ECA")))
+                .andExpect(content().string(containsString(regionValid)))
                 .andExpect(content().string(containsString("date")))
                 // Should contain the date we sent earlier in test #15
-                .andExpect(content().string(containsString("2022-10-13T14:34:41")))
+                .andExpect(content().string(containsString(dateValid)))
                 .andExpect(content().string(containsString("result")))
                 // Should contain the result we sent earlier in test #34
                 .andExpect(content().string(containsString("ALLOWED")))
@@ -845,21 +768,21 @@ class AntifraudApplicationTests {
     @WithMockUser(username = "testadmin", roles = {"ADMINISTRATOR"})
     void testUserDeletion() throws Exception {
         mvc
-                .perform(delete("/api/auth/user/testmerchant"))
+                .perform(delete("/api/auth/user/" + testMerchantUsername))
                 .andExpect(status().isOk())
                 // Response should contain username and status fields
                 .andExpect(content().string(containsString("username")))
                 // Username should be the same as the one we sent earlier
-                .andExpect(content().string(containsString("testmerchant")))
+                .andExpect(content().string(containsString(testMerchantUsername)))
                 .andExpect(content().string(containsString("status")))
                 // Status should be "Deleted successfully!"
                 .andExpect(content().string(containsString("Deleted successfully!")));
 
         mvc
-                .perform(delete("/api/auth/user/testsupport"))
+                .perform(delete("/api/auth/user/" + testSupportUsername))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("username")))
-                .andExpect(content().string(containsString("testsupport")))
+                .andExpect(content().string(containsString(testSupportUsername)))
                 .andExpect(content().string(containsString("status")))
                 .andExpect(content().string(containsString("Deleted successfully!")));
     }
@@ -869,18 +792,26 @@ class AntifraudApplicationTests {
     @Order(44)
     void testTransactionDeletion() {
         // Set the latest transaction in the database as transaction id
-        String transactionId = String.valueOf(transactionRepository
-                .findAll().get(transactionRepository.findAll().size() - 1).getId());
+        Long transactionId = getLastTransactionId();
 
-        transactionRepository.deleteById(Long.parseLong(transactionId));
-        assertThat(transactionRepository.findById(Long.parseLong(transactionId))).isEmpty();
+        transactionRepository.deleteById(transactionId);
+        assertThat(transactionRepository.findById(transactionId)).isEmpty();
     }
 
     // Test if the admin can be removed from the database (for cleanup)
     @Test
     @Order(45)
     void removeAdminUser() {
-        userService.deleteUser(admin.getUsername());
-        assertThat(userRepository.findByUsername(admin.getUsername())).isNull();
+        userService.deleteUser(testAdministrator.getUsername());
+        assertThat(userRepository.findByUsername(testAdministrator.getUsername())).isNull();
+    }
+
+    /**
+     * Helper method to get the latest transaction id in the database
+     *
+     * @return the latest transaction id as a Long
+     */
+    private long getLastTransactionId() {
+        return transactionRepository.findAll().get(transactionRepository.findAll().size() - 1).getId();
     }
 }
