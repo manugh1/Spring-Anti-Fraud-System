@@ -3,7 +3,9 @@ package io.github.dankoller.antifraud;
 import io.github.dankoller.antifraud.controller.AuthorizationController;
 import io.github.dankoller.antifraud.controller.TransactionController;
 import io.github.dankoller.antifraud.controller.ValidationController;
+import io.github.dankoller.antifraud.entity.Card;
 import io.github.dankoller.antifraud.entity.user.User;
+import io.github.dankoller.antifraud.persistence.CardRepository;
 import io.github.dankoller.antifraud.persistence.TransactionRepository;
 import io.github.dankoller.antifraud.persistence.UserRepository;
 import io.github.dankoller.antifraud.service.UserService;
@@ -18,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -43,7 +47,7 @@ class AntifraudApplicationTests {
     private final String testPassword = "password";
 
     // Card numbers
-    private final String cardNumberValid = "4000008449433403";
+    private final String cardNumberValid = "4000008449430003";
     private final String cardNumberInvalid = "1234567891011121";
     private final String stolenCardNumberValid = "3151853279026036";
     private final String stolenCardNumberValidAsJson = "{" + "\"number\":\"" + stolenCardNumberValid + "\"}";
@@ -95,6 +99,9 @@ class AntifraudApplicationTests {
 
     @Autowired
     private ValidationController validationController;
+
+    @Autowired
+    private CardRepository cardRepository;
 
     // Test if the controllers are initialized
     @Test
@@ -299,8 +306,8 @@ class AntifraudApplicationTests {
                 .andExpect(status().isOk())
                 // The response should contain the result and info fields
                 .andExpect(content().string(containsString("result")))
-                // Should be ALLOWED
-                .andExpect(content().string(containsString("PROHIBITED")))
+                // Should be MANUAL_PROCESSING
+                .andExpect(content().string(containsString("MANUAL_PROCESSING")))
                 .andExpect(content().string(containsString("info")))
                 // Should be 'amount'
                 .andExpect(content().string(containsString("amount")));
@@ -798,9 +805,19 @@ class AntifraudApplicationTests {
         assertThat(transactionRepository.findById(transactionId)).isEmpty();
     }
 
-    // Test if the admin can be removed from the database (for cleanup)
+    // Test if the card number in the database is deleted (for cleanup)
     @Test
     @Order(45)
+    void testCardNumberDeletion() {
+        Optional<Card> card = cardRepository.findByNumber(cardNumberValid);
+
+        card.ifPresent(value -> cardRepository.delete(value));
+        assertThat(cardRepository.findByNumber(cardNumberValid)).isEmpty();
+    }
+
+    // Test if the admin can be removed from the database (for cleanup)
+    @Test
+    @Order(46)
     void removeAdminUser() {
         userService.deleteUser(testAdministrator.getUsername());
         assertThat(userRepository.findByUsername(testAdministrator.getUsername())).isNull();
