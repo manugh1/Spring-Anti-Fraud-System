@@ -53,9 +53,9 @@ class AntifraudApplicationTests {
     private final String stolenCardNumberValidAsJson = "{" + "\"number\":\"" + stolenCardNumberValid + "\"}";
 
     // IP addresses
-    private final String ipAddressValid = "127.0.0.1";
-    private final String badIpValid = "127.127.127.127";
-    private final String suspiciousIpValidAsJson = "{" + "\"ip\":\"" + badIpValid + "\"}";
+    private final String ipValid = "127.0.0.1";
+    private final String suspiciousIpValid = "127.127.127.127";
+    private final String suspiciousIpValidAsJson = "{" + "\"ip\":\"" + suspiciousIpValid + "\"}";
 
     // Regions
     private final String regionValid = "ECA";
@@ -67,7 +67,7 @@ class AntifraudApplicationTests {
     private final String amountValid = "800";
     private final String transactionValidAsJson = "{" +
             "\"amount\":\"" + amountValid +
-            "\",\"ip\":\"" + ipAddressValid +
+            "\",\"ip\":\"" + ipValid +
             "\",\"number\":\"" + cardNumberValid +
             "\",\"region\":\"" + regionValid +
             "\",\"date\":\"" + dateValid +
@@ -346,7 +346,7 @@ class AntifraudApplicationTests {
     @Order(15)
     @WithMockUser(username = "testmerchant", roles = {"MERCHANT"})
     void testPostTransactionInvalidIp() throws Exception {
-        String transactionBadIpAsJson = transactionValidAsJson.replace(ipAddressValid, "");
+        String transactionBadIpAsJson = transactionValidAsJson.replace(ipValid, "");
 
         mvc
                 .perform(post("/api/antifraud/transaction")
@@ -422,7 +422,7 @@ class AntifraudApplicationTests {
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("ip")))
                 // Response should contain the ip we sent
-                .andExpect(content().string(containsString(badIpValid)));
+                .andExpect(content().string(containsString(suspiciousIpValid)));
     }
 
     // Test if the support can't post a new suspicious ip with an invalid ip
@@ -430,7 +430,7 @@ class AntifraudApplicationTests {
     @Order(21)
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testPostSuspiciousIpInvalidIp() throws Exception {
-        String suspiciousIpBadIpAsJson = suspiciousIpValidAsJson.replace(badIpValid, "");
+        String suspiciousIpBadIpAsJson = suspiciousIpValidAsJson.replace(suspiciousIpValid, "");
 
         mvc
                 .perform(post("/api/antifraud/suspicious-ip")
@@ -451,7 +451,7 @@ class AntifraudApplicationTests {
                 .andExpect(content().string(containsString("id")))
                 .andExpect(content().string(containsString("ip")))
                 // Response should contain the ip we sent earlier
-                .andExpect(content().string(containsString(badIpValid)));
+                .andExpect(content().string(containsString(suspiciousIpValid)));
     }
 
     // Test if the support can delete a suspicious ip
@@ -460,12 +460,12 @@ class AntifraudApplicationTests {
     @WithMockUser(username = "testsupport", roles = {"SUPPORT"})
     void testDeleteSuspiciousIpSupport() throws Exception {
         mvc
-                .perform(delete("/api/antifraud/suspicious-ip/" + badIpValid))
+                .perform(delete("/api/antifraud/suspicious-ip/" + suspiciousIpValid))
                 .andExpect(status().isOk())
                 // Response should contain a status field
                 .andExpect(content().string(containsString("status")))
                 // Response should contain the status "IP <ip> successfully removed!"
-                .andExpect(content().string(containsString("IP " + badIpValid + " successfully removed!")));
+                .andExpect(content().string(containsString("IP " + suspiciousIpValid + " successfully removed!")));
     }
 
     // Test if the support can't delete a suspicious ip with an invalid ip
@@ -751,7 +751,7 @@ class AntifraudApplicationTests {
                 .andExpect(content().string(containsString(amountValid)))
                 .andExpect(content().string(containsString("ip")))
                 // Should contain the ip we sent earlier in test #15
-                .andExpect(content().string(containsString(ipAddressValid)))
+                .andExpect(content().string(containsString(ipValid)))
                 .andExpect(content().string(containsString("number")))
                 // Should contain the card number we sent earlier in test #15
                 .andExpect(content().string(containsString(cardNumberValid)))
