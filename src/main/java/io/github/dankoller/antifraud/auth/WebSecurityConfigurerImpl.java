@@ -38,6 +38,13 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(getEncoder());
     }
 
+    /**
+     * This method is used to configure the security of the web application by restricting access based on the
+     * HttpServletRequest.
+     *
+     * @param http the {@link HttpSecurity} to modify
+     * @throws Exception if an error occurs
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -48,7 +55,6 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .csrf().disable().headers().frameOptions().disable() // for Postman, H2 console
                 .and()
                 .authorizeRequests()
-                .mvcMatchers("/h2-console/**").permitAll() // for H2 console
                 // Api endpoints
                 .mvcMatchers("/api/auth/login").permitAll()
                 .mvcMatchers("/api/auth/user", "/actuator/shutdown").permitAll()
@@ -56,9 +62,15 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/auth/list").hasAnyRole("SUPPORT", "ADMINISTRATOR")
                 .mvcMatchers("/api/auth/**").hasRole("ADMINISTRATOR")
                 .mvcMatchers("/api/antifraud/**").hasRole("SUPPORT");
+//                .mvcMatchers("/h2-console/**").permitAll() // for H2 console
 //                .anyRequest().authenticated() // Causes restAuthenticationEntryPoint not to be called properly
     }
 
+    /**
+     * This method is used to encrypt the password of the user using the BCryptPasswordEncoder.
+     *
+     * @return the {@link PasswordEncoder} to use
+     */
     @Bean
     public static PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
@@ -70,7 +82,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
      * @return CorsConfigurationSource
      */
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));

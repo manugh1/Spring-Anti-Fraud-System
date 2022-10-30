@@ -8,7 +8,7 @@ public enum Role {
     ADMINISTRATOR("ROLE_ADMINISTRATOR"),
     SUPPORT("ROLE_SUPPORT"),
     MERCHANT("ROLE_MERCHANT")
-    ; // Role will be sorted by order of declaration
+    ; // Roles will be sorted by order of declaration
 
     public final String stringWithRolePrefix;
 

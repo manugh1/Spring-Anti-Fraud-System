@@ -14,6 +14,12 @@ public class UserDetailsImpl implements UserDetails {
     private final List<GrantedAuthority> rolesAndAuthorities;
     private final boolean isAccountNonLocked;
 
+    /**
+     * This constructor is used to create a new UserDetailsImpl object. It is used by the UserDetailsService to create
+     * a UserDetails object.
+     *
+     * @param user The user object that is used to create the UserDetails object
+     */
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
