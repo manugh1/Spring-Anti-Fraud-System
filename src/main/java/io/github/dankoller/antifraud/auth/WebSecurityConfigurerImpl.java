@@ -77,14 +77,16 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Allow CORS for all origins, headers, and methods for all endpoints (only for development)
+     * Allow CORS for all origins, headers, and methods for all endpoints (only for development).
+     * Note that the modifier must not be private.
      *
      * @return CorsConfigurationSource
      */
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
+        // Allow Reacts dev server to access the API
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
