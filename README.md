@@ -439,7 +439,7 @@ The application is tested using JUnit 5. The integration tests are run using the
 and provide a full integration test of the application. The code coverage is 96% for classes, 87% for methods and 83%
 for lines.
 
-_You need to have a MySQL server running on your machine in order to run the integration tests._
+_You need to have a MySQL server running and a database set up created in order to run the tests._
 
 ## License
 
