@@ -16,12 +16,29 @@ To build and run this project you need:
 
 ## How to use
 
-Clone the repository and run the following commands to build and run the project:
+- Clone this repository
+
+```
+git clone https://github.com/dan-koller/Spring-Anti-Fraud-System.git
+```
+
+- [Create](https://www.mysqltutorial.org/mysql-create-database/) a database in MySQL
+
+- Start MySQL server
+
+```
+mysql.server start
+```
+
+- Build and run the project
 
 ```shell
 ./gradlew build
 ./gradlew bootRun
 ```
+
+- (Optional) [Clone the repoistory](https://github.com/dan-koller/React-Anti-Fraud-Frontend) and start
+  the [frontend](#frontend)
 
 If you're going to use MySQL (recommended), you need to define the following environment variables:
 
@@ -38,9 +55,6 @@ and `application.properties` files._
 You can only access the endpoints using a browser or a tool that allows you to send HTTP requests
 like [Postman](https://www.getpostman.com/). There are several endpoints that you can use to interact with the system.
 Post a request to the according endpoint in a format shown in the examples below.
-
-If you run the application, you can also access the web interface at [http://localhost:28852/](http://localhost:28852/)
-and access the services.
 
 **Please note, that the first user you create will be an admin. This can only be changed in the database.**
 
@@ -424,6 +438,8 @@ model-view-controller pattern. The application consists of the following compone
 The application is tested using JUnit 5. The integration tests are run using the Spring Boot Test framework
 and provide a full integration test of the application. The code coverage is 96% for classes, 87% for methods and 83%
 for lines.
+
+_You need to have a MySQL server running on your machine in order to run the integration tests._
 
 ## License
 
