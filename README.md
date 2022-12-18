@@ -37,7 +37,7 @@ mysql.server start
 ./gradlew bootRun
 ```
 
-- (Optional) [Clone the repoistory](https://github.com/dan-koller/React-Anti-Fraud-Frontend) and start
+- (Optional) [Clone the repository](https://github.com/dan-koller/React-Anti-Fraud-Frontend) and start
   the [frontend](#frontend)
 
 If you're going to use MySQL (recommended), you need to define the following environment variables:
