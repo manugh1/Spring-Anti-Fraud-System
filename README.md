@@ -18,7 +18,7 @@ To build and run this project you need:
 
 - Clone this repository
 
-```
+```shell
 git clone https://github.com/dan-koller/Spring-Anti-Fraud-System.git
 ```
 
@@ -26,7 +26,7 @@ git clone https://github.com/dan-koller/Spring-Anti-Fraud-System.git
 
 - Start MySQL server
 
-```
+```shell
 mysql.server start
 ```
 
@@ -48,7 +48,7 @@ export SPRING_DATASOURCE_USERNAME=root
 export SPRING_DATASOURCE_PASSWORD=your_password
 ```
 
-You can also define these variables in a `.env` file in the `resources/` directory of the project.
+You can define these variables in a `.env` file in the `resources/` directory of the project.
 _Alternatively, you can use an in-memory database (like H2) by configuring the `build.gradle`
 and `application.properties` files._
 
