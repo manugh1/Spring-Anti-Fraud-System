@@ -48,7 +48,8 @@ export SPRING_DATASOURCE_USERNAME=root
 export SPRING_DATASOURCE_PASSWORD=your_password
 ```
 
-You can define these variables in a `.env` file in the `resources/` directory of the project.
+You can define these variables in a `.env` file in the `resources/` directory of the project. You can follow the
+template in the `.env.example` file.
 _Alternatively, you can use an in-memory database (like H2) by configuring the `build.gradle`
 and `application.properties` files._
 
@@ -76,33 +77,33 @@ Post a request to the according endpoint in a format shown in the examples below
 
 ## API Endpoints
 
-|   | Anonymous  | MERCHANT  | ADMINISTRATOR  | SUPPORT  |
-|---|---|---|---|---|
-| POST /api/auth/user  | +  | +  | +  | +  |
-| DELETE /api/auth/user/{username}   | -  | -  | +  | -  |
-| GET /api/auth/list  | -  | -  | +  | +  |
-| PUT /api/auth/role  | -  | -  | +  | -  |
-| PUT /api/auth/access  | -  | -  | +  | -  |
-| POST /api/antifraud/transaction  | -  | +  | -  | -  |
-| POST, DELETE, GET api/antifraud/suspicious-ip  | -  | -  | -  | +  |
-| POST, DELETE, GET api/antifraud/stolencard  | -  | -  | -  | +  |
-| GET /api/antifraud/history | -  | -  | -  | +  |
-| PUT /api/antifraud/transaction | -  | -  | -  | +  |
+|                                               | Anonymous | MERCHANT | ADMINISTRATOR | SUPPORT |
+|-----------------------------------------------|-----------|----------|---------------|---------|
+| POST /api/auth/user                           | +         | +        | +             | +       |
+| DELETE /api/auth/user/{username}              | -         | -        | +             | -       |
+| GET /api/auth/list                            | -         | -        | +             | +       |
+| PUT /api/auth/role                            | -         | -        | +             | -       |
+| PUT /api/auth/access                          | -         | -        | +             | -       |
+| POST /api/antifraud/transaction               | -         | +        | -             | -       |
+| POST, DELETE, GET api/antifraud/suspicious-ip | -         | -        | -             | +       |
+| POST, DELETE, GET api/antifraud/stolencard    | -         | -        | -             | +       |
+| GET /api/antifraud/history                    | -         | -        | -             | +       |
+| PUT /api/antifraud/transaction                | -         | -        | -             | +       |
 
 _'+' means the user with the role above can access that endpoint. '-' means the user with the role above does not have
 access to that endpoint._
 
 ### Region codes
 
-| Code  | Region |
-|---|---|
-| EAP   | East Asia and Pacific |
-| ECA   | Europe and Central Asia |
-| HIC   | High-Income countries |
-| LAC   | Latin America and the Caribbean |
-| MENA  | The Middle East and North Africa |
-| SA    | South Asia |
-| SSA   | Sub-Saharan Africa |
+| Code | Region                           |
+|------|----------------------------------|
+| EAP  | East Asia and Pacific            |
+| ECA  | Europe and Central Asia          |
+| HIC  | High-Income countries            |
+| LAC  | Latin America and the Caribbean  |
+| MENA | The Middle East and North Africa |
+| SA   | South Asia                       |
+| SSA  | Sub-Saharan Africa               |
 
 ### Examples
 
@@ -432,6 +433,7 @@ model-view-controller pattern. The application consists of the following compone
 - [Spring Boot Test 2.7.0](https://spring.io/projects/spring-boot-test)
 - [Spring Security Test 5.6.0](https://spring.io/projects/spring-security-test)
 - [JUnit 5.8.1](https://junit.org/junit5/)
+- [Spring dotenv 2.3.0](https://github.com/paulschwarz/spring-dotenv)
 
 ## Testing
 
@@ -439,7 +441,15 @@ The application is tested using JUnit 5. The integration tests are run using the
 and provide a full integration test of the application. The code coverage is 96% for classes, 87% for methods and 83%
 for lines.
 
-_You need to have a MySQL server running and a database set up created in order to run the tests._
+_You need to have a MySQL server running and a database set up in order to run the tests._
+
+For example, my testing flow looks like this:
+
+```shell
+mysql.server start
+./gradlew test
+mysql.server stop
+```
 
 ## License
 
