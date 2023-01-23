@@ -48,14 +48,14 @@ export SPRING_DATASOURCE_USERNAME=root
 export SPRING_DATASOURCE_PASSWORD=your_password
 ```
 
-You can define these variables in a `.env` file in the `resources/` directory of the project. You can follow the
+You can define these variables in a `.env` file in the `resources/` directory of the project. Just follow the
 template in the `.env.example` file.
-_Alternatively, you can use an in-memory database (like H2) by configuring the `build.gradle`
-and `application.properties` files._
+_Alternatively, you can use an in-memory database (like [H2](https://www.h2database.com/html/main.html)) by configuring
+the `build.gradle` and `application.properties` files._
 
-You can only access the endpoints using a browser or a tool that allows you to send HTTP requests
+The endpoints can be accessed using a browser or a tool that allows you to send HTTP requests
 like [Postman](https://www.getpostman.com/). There are several endpoints that you can use to interact with the system.
-Post a request to the according endpoint in a format shown in the examples below.
+Request the according endpoint in a format shown in the examples below.
 
 **Please note, that the first user you create will be an admin. This can only be changed in the database.**
 
