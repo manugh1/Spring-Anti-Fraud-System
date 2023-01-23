@@ -45,6 +45,9 @@ dependencies {
 
 	// Spring security test
 	testImplementation 'org.springframework.security:spring-security-test:5.6.0'
+
+	// Spring dotenv
+	implementation group: 'me.paulschwarz', name: 'spring-dotenv', version: '2.3.0'
 }
 
 tasks.named('test') {
