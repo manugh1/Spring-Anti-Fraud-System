@@ -49,7 +49,7 @@ public class UserDetailsImpl implements UserDetails {
         return this.isAccountNonLocked;
     }
 
-    // 4 remaining methods that just return true
+    // 3 remaining methods that just return true
     @Override
     public boolean isAccountNonExpired() {
         return true;

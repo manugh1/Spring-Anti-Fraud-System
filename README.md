@@ -16,21 +16,40 @@ To build and run this project you need:
 
 ## How to use
 
-- Clone this repository
+1. Clone this repository
 
 ```shell
 git clone https://github.com/dan-koller/Spring-Anti-Fraud-System.git
 ```
 
-- [Create](https://www.mysqltutorial.org/mysql-create-database/) a database in MySQL
+2. [Create](https://www.mysqltutorial.org/mysql-create-database/) a database in MySQL
 
-- Start MySQL server
+3. Start MySQL server
 
 ```shell
 mysql.server start
 ```
 
-- Build and run the project
+4. Setup the environment
+
+```shell
+cd Spring-Web-Quiz-Engine
+cp /src/main/resources/.env.example /src/main/resources/.env
+```
+
+Edit the `.env` file and set the environment variables according to your setup. If you're going to use MySQL (
+recommended), you need to define the following environment variables:
+
+```shell
+SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/antifraud
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=your_password
+```
+
+_Alternatively, you can use an in-memory database (like [H2](https://www.h2database.com/html/main.html)) by configuring
+the `build.gradle` and `application.properties` files._
+
+5. Build and run the project
 
 ```shell
 ./gradlew build
@@ -39,19 +58,6 @@ mysql.server start
 
 - (Optional) [Clone the repository](https://github.com/dan-koller/React-Anti-Fraud-Frontend) and start
   the [frontend](#frontend)
-
-If you're going to use MySQL (recommended), you need to define the following environment variables:
-
-```shell
-export SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/antifraud
-export SPRING_DATASOURCE_USERNAME=root
-export SPRING_DATASOURCE_PASSWORD=your_password
-```
-
-You can define these variables in a `.env` file in the `resources/` directory of the project. Just follow the
-template in the `.env.example` file.
-_Alternatively, you can use an in-memory database (like [H2](https://www.h2database.com/html/main.html)) by configuring
-the `build.gradle` and `application.properties` files._
 
 The endpoints can be accessed using a browser or a tool that allows you to send HTTP requests
 like [Postman](https://www.getpostman.com/). There are several endpoints that you can use to interact with the system.
